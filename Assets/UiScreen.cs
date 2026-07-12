@@ -69,7 +69,7 @@ public class UiScreen : MonoBehaviour
             case Transition.colorFade:
                 StartCoroutine(FadeTo(fadeColor, -1, fadeTime));
                 break;
-            case Transition colorFadeandFade:
+            case Transition.colorFadeandFade:
                 StartCoroutine(ColorFadeandFade(fadeTime, 1, fadeColor));
                 break;
         }
@@ -240,7 +240,22 @@ public class UiScreen : MonoBehaviour
     }
     public virtual void LoadScene(string sceneName, float fadeDuration = -1, float newTimeScale = 1f)
     {
-        LoadScene(SceneUtility.GetBuildIndexByScenePath(sceneName), fadeDuration, newTimeScale);
+        int index = -1;
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            string path = SceneUtility.GetScenePathByBuildIndex(i);
+            if (System.IO.Path.GetFileNameWithoutExtension(path) == sceneName)
+            {
+                index = i;
+                break;
+            }
+        }
+        if (index < 0)
+        {
+            Debug.LogError($"Scene '{sceneName}' not found in Build Settings.");
+            return;
+        }
+        LoadScene(index, fadeDuration, newTimeScale);
     }
     public virtual void LoadScene(int buildIndex, float fadeDuration = -1, float newTimeScale = 1f)
     {
