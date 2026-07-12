@@ -1,0 +1,811 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEngine.UI;
+using Unity.Mathematics;
+
+public class PlayerController : MonoBehaviour
+{
+    [Header("Horizontal Movement Settings")]
+    [SerializeField] private float walkSpeed = 1;
+    [Space(5)]
+
+    [Header("Vertical Movement Settings")]
+    [SerializeField] private float jumpForce = 45f;
+    private int jumpBufferCounter = 0;
+    [SerializeField] private int jumpBufferFrames;
+    private float coyoteTimeCounter = 0;
+    [SerializeField] private float coyoteTime;
+    private int airJumpCounter = 0;
+    [SerializeField] private int maxAirJumps;
+    private float gravity;
+    [SerializeField] private float maxFallSpeed;
+    [Space(5)]
+
+    [Header("Wall Jump Setting")]
+    [SerializeField] private float wallSlideSpeed = 2f;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask walllayer;
+    [SerializeField] private float wallJumpingDuration;
+    [SerializeField] private Vector2 wallJumpingPower;
+    float wallJumpingDirection;
+    bool isSliding;
+    bool isWallJumping;
+    [Space(5)]
+
+    [Header("Ground Check Settings")]
+    [SerializeField] private Transform groundCheckPoint;
+    [SerializeField] private float groundCheckY = 0.2f;
+    [SerializeField] private float groundCheckX = 0.5f;
+    [SerializeField] private LayerMask whatisGround;
+    [Space(5)]
+
+    [Header("Dash Settings")]
+    [SerializeField] private float dashSpeed;
+    [SerializeField] private float dashTime;
+    [SerializeField] private float dashCooldown;
+    private bool canDash = true, dashed;
+    [Space(5)]
+
+    [Header("Attack Setting")]
+    [SerializeField] private Transform SideAttackTransform, UpAttackTransform, DownAttackTransform;
+    [SerializeField] private Vector2 SideAttackArea, UpAttackArea, DownAttackArea;
+    [SerializeField] private LayerMask attackableLayer;
+    [SerializeField] private float damage;
+    private float timeBetweenAttack, timeSinceAttack;
+    [SerializeField] private GameObject[] slashEffects;
+    [SerializeField] GameObject Slash;
+
+    private int currentSlashIndex = 0;
+
+    bool restoreTime;
+    float restoreTimeSpeed;
+    [Space(5)]
+
+    [Header("Recoil")]
+    [SerializeField] private int recoilXStep = 5;
+    [SerializeField] private int recoilYStep = 5;
+    [SerializeField] private float recoilXSpeed = 100;
+    [SerializeField] private float recoilYSpeed = 100;
+    private int stepXRecoiled, stepYRecoiled;
+    [Space(5)]
+
+    [Header("Health setting")]
+    public int health;
+    public int maxHealth;
+    public int maxTotalHealth = 10;
+    public int heartShards;
+    [SerializeField] GameObject bloodSplit;
+    [SerializeField] float hitFlashSpeed;
+    public delegate void OnHealthChangeDelegate();
+    [HideInInspector] public OnHealthChangeDelegate OnHealthChangedCallback;
+    [SerializeField] GameObject HealingVFX;
+    private GameObject activeHealingVFX;
+
+    float healTimer;
+    [SerializeField] float timetoHeal;
+    [Space(5)]
+
+    [Header("Mana Setting")]
+    [SerializeField] UnityEngine.UI.Image manaStorage;
+    [SerializeField] float mana;
+    [SerializeField] float manaDrainSpeed;
+    [SerializeField] float manaGain;
+    public bool respawnMana;
+    [Space(5)]
+
+    [Header("Spell Setting")]
+    [SerializeField] float manaSpellCost = 0.3f;
+    [SerializeField] float timeBetweenCast;
+    [SerializeField] float spellDamage;
+    [SerializeField] float downSpellForce;
+    [SerializeField] GameObject UpSpellCast;
+    [SerializeField] GameObject SideSpellCast;
+    [SerializeField] GameObject DownSpellFinished;
+    float timeSinceCast;
+    float castorhealTimer;
+    [Space(5)]
+
+    [Header("Audio Setting")]
+    [SerializeField] AudioClip landingSound;
+    [SerializeField] AudioClip jumpSound;
+    [SerializeField] AudioClip dashSound;
+    [SerializeField] AudioClip attackSound;
+    [SerializeField] AudioClip hurtSound;
+    [SerializeField] AudioClip sideSpellSound;
+    [SerializeField] AudioClip upSpellSound;
+    [SerializeField] AudioClip deathSound;
+
+    [Header("Camera Setting")]
+    [SerializeField] private float playerFallSpeedTheshold = -10;
+
+    [HideInInspector] public PlayerStateList pState;
+    public Rigidbody2D rb;
+    private float xAxis;
+    private float yAxis;
+    Animator anim;
+    private bool attack = false;
+    private SpriteRenderer sr;
+    public ParticleSystem dust;
+
+    private bool landingSoundisPlayed;
+    private AudioSource audioSources;
+
+    public static PlayerController Instance;
+    public bool unlockingWallJump;
+    public bool unlockingDash;
+    public bool unlockingDoubleJump;
+    public bool unlockingSideSpell;
+    public bool unlockingUpSpell;
+    bool openInventory;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        { Destroy(gameObject); }
+        else
+        { Instance = this; }
+        DontDestroyOnLoad(gameObject);
+    }
+
+    void Start()
+    {
+        pState = GetComponent<PlayerStateList>();
+        rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+        audioSources = GetComponent<AudioSource>();
+        anim = GetComponent<Animator>();
+        gravity = rb.gravityScale;
+        pState.dashing = false;
+        Mana = mana;
+        manaStorage.fillAmount = Mana;
+        Health = maxHealth;
+        SaveData.saveinstance.LoadPlayerData();
+
+        FindObjectOfType<HeartController>().InstantiateHeartsContainer();
+
+        if (respawnMana == true)
+        {
+            UIManager.Instance.ManaSwitch(UIManager.ManaState.Respawn);
+        }
+        else
+        {
+            UIManager.Instance.ManaSwitch(UIManager.ManaState.Full);
+        }
+
+        if (OnHealthChangedCallback != null)
+        { 
+            OnHealthChangedCallback.Invoke();
+        }
+
+        if (Health == 0)
+        {
+            pState.alive = false;
+            GameManager.Instance.respawnPlayer();
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(SideAttackTransform.position, SideAttackArea);
+        Gizmos.DrawWireCube(UpAttackTransform.position, UpAttackArea);
+        Gizmos.DrawWireCube(DownAttackTransform.position, DownAttackArea);
+    }
+
+    void Update()
+    {
+        if (pState.cutscene || GameManager.Instance.isPaused) return;
+
+        if (pState.alive)
+        {
+            GetInputs();
+            ToggleInventory();
+        }
+        
+        UpdateJumpVariables();
+        UpdateCameraYDampingforPlayerFall();
+
+        if (pState.dashing) return;
+
+        FlashWhileInvincible();
+
+        if (pState.alive)
+        {
+            Heal();
+            CastSpell();
+        }
+        
+
+        if (pState.healing) return;
+        if (pState.alive)
+        {
+            if (!isWallJumping)
+            {
+                Move();
+                Flip();
+                Jump();
+            }
+            if (unlockingWallJump)
+            {
+                WallSlide();
+                WallJump();
+            }
+            if (unlockingDash)
+            {
+                StartDash();
+            }
+            Attack();
+        }
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D _other)
+    {
+        if (_other.GetComponent<Enemy>() != null && pState.casting)
+        {
+            _other.GetComponent<Enemy>().EnemyHit(spellDamage, (_other.transform.position - transform.position).normalized, -recoilYSpeed);
+        }
+
+    }
+
+    private void FixedUpdate()
+    {
+        if (pState.cutscene) return;
+        if (pState.dashing) return;
+        Recoil();
+    }
+
+    void GetInputs()
+    {
+        if (GameManager.Instance.isPaused || GameManager.isStopped) 
+        { 
+            return;
+        }
+        xAxis = Input.GetAxisRaw("Horizontal");
+        yAxis = Input.GetAxisRaw("Vertical");
+        attack = Input.GetButtonDown("Attack");
+        openInventory = Input.GetButton("Inventory");
+
+        if (Input.GetButton("Cast/Heal"))
+        {
+            castorhealTimer += Time.deltaTime;
+        }
+        else
+        {
+            castorhealTimer = 0;
+        }
+    }
+
+    void StartDash()
+    {
+        if (Input.GetButtonDown("Dash") && canDash && !dashed)
+        {
+            StartCoroutine(Dash());
+            dashed = true;
+        }
+
+        if (Grounded())
+        {
+            dashed = false;
+        }
+    }
+
+    private void Move()
+    {
+        if (pState.healing) rb.velocity = new Vector2(0, 0);
+        rb.velocity = new Vector2(walkSpeed * xAxis, rb.velocity.y);
+        if (xAxis != 0) Flip();
+
+        anim.SetBool("Walking", rb.velocity.x != 0 && Grounded());
+    }
+
+    void UpdateCameraYDampingforPlayerFall()
+    {
+        if (rb.velocity.y < playerFallSpeedTheshold && !CameraManager.Instance.isLerpingYDamp && !CameraManager.Instance.hasLerpingYDamp)
+        {
+            StartCoroutine(CameraManager.Instance.LerpYDamping(true));
+        }
+        else if (rb.velocity.y >= 0 && !CameraManager.Instance.isLerpingYDamp && CameraManager.Instance.hasLerpingYDamp)
+        {
+            CameraManager.Instance.hasLerpingYDamp = false;
+            StartCoroutine(CameraManager.Instance.LerpYDamping(false));
+        }
+    }
+
+    void ToggleInventory()
+    {
+        if (openInventory)
+        {
+            UIManager.Instance.inventory.SetActive(true);
+        }
+        else
+        {
+            UIManager.Instance.inventory.SetActive(false);
+        }
+    }
+    void Flip()
+    {
+        if (xAxis > 0)
+        {
+            transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x), transform.localScale.y);
+            pState.lookingRight = true;
+            if (Grounded())
+            {
+                dust.Play();
+            }
+        }
+        else if (xAxis < 0)
+        {
+            transform.localScale = new Vector2(-Mathf.Abs(transform.localScale.x), transform.localScale.y);
+            pState.lookingRight = false;
+            if (Grounded())
+            {
+                dust.Play();
+            }
+        }
+    }
+    IEnumerator Dash()
+    {
+        canDash = false;
+        pState.dashing = true;
+        anim.SetTrigger("Dashing");
+        audioSources.PlayOneShot(dashSound);
+        rb.gravityScale = 0;
+        int dir_ = pState.lookingRight ? 1 : -1;
+        rb.velocity = new Vector2(dashSpeed * dir_, 0);
+        yield return new WaitForSeconds(dashTime);
+        rb.gravityScale = gravity;
+        pState.dashing = false;
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
+
+    public IEnumerator WalktoScene(Vector2 _exitDir, float _delay)
+    {
+        if (_exitDir.y > 0)
+        {
+            rb.velocity = jumpForce * _exitDir;
+        }
+
+        if (_exitDir.x != 0)
+        {
+            xAxis = _exitDir.x > 0 ? 1 : -1;
+            Move();
+        }
+        Flip();
+        yield return new WaitForSeconds(_delay);
+        pState.cutscene = false;
+    }
+    void Attack()
+    {
+        timeSinceAttack += Time.deltaTime;
+        if (attack && timeSinceAttack >= timeBetweenAttack)
+        {
+            timeSinceAttack = 0;
+
+            GameObject currentSlash = slashEffects[currentSlashIndex];
+            audioSources.PlayOneShot(attackSound);
+
+            currentSlashIndex++;
+            if (currentSlashIndex >= slashEffects.Length)
+            {
+                currentSlashIndex = 0;
+            }
+
+            if (yAxis == 0 || (yAxis < 0 && Grounded()))
+            {
+                int recoilLeftorRight = pState.lookingRight ? 1 : -1;
+                Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, Vector2.right * recoilLeftorRight, recoilXSpeed);
+                Instantiate(currentSlash, SideAttackTransform);
+            }
+            else if (yAxis > 0)
+            {
+                Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, Vector2.up, recoilYSpeed);
+                SlashEffectAtAngle(currentSlash, 80, UpAttackTransform);
+            }
+            else if (yAxis < 0 && !Grounded())
+            {
+                Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, Vector2.down, recoilYSpeed);
+                SlashEffectAtAngle(currentSlash, -90, DownAttackTransform);
+            }
+        }
+    }
+
+    void Hit(Transform _attackTransform, Vector2 _attackArea, ref bool _recoilBool, Vector2 _recoilDir, float _recoilStrength)
+    {
+        Collider2D[] objectsToHit = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0, attackableLayer);
+
+        if (objectsToHit.Length > 0)
+        {
+            _recoilBool = true;
+        }
+
+        for (int i = 0; i < objectsToHit.Length; i++)
+        {
+            if (objectsToHit[i].GetComponent<Enemy>() != null)
+            {
+                objectsToHit[i].GetComponent<Enemy>().EnemyHit(damage, _recoilDir, _recoilStrength);
+
+                if (objectsToHit[i].CompareTag("Enemy"))
+                {
+                    Mana += manaGain;
+                }
+            }
+        }
+    }
+
+    void SlashEffectAtAngle(GameObject _slashEffect, int _effectAngle, Transform _attackTransform)
+    {
+        GameObject spawnedSlash = Instantiate(_slashEffect, _attackTransform);
+        spawnedSlash.transform.localEulerAngles = new Vector3(0, 0, _effectAngle);
+    }
+
+    void Recoil()
+    {
+        if (pState.recoilingX)
+        {
+            if (pState.lookingRight)
+                rb.velocity = new Vector2(-recoilXSpeed, 0);
+            else
+                rb.velocity = new Vector2(recoilXSpeed, 0);
+        }
+        if (pState.recoilingY)
+        {
+            rb.gravityScale = 0;
+            if (yAxis < 0)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, recoilYSpeed);
+            }
+            else
+            {
+                rb.velocity = new Vector2(rb.velocity.x, -recoilYSpeed);
+            }
+            airJumpCounter = 0;
+        }
+        else
+        {
+            rb.gravityScale = gravity;
+        }
+        if (pState.recoilingX && stepXRecoiled < recoilXStep)
+        {
+            stepXRecoiled++;
+        }
+        else
+        {
+            StopRecoilX();
+        }
+
+        if (pState.recoilingY && stepYRecoiled < recoilYStep)
+        {
+            stepYRecoiled++;
+        }
+        else
+        {
+            StopRecoilY();
+        }
+        if (Grounded())
+        {
+            StopRecoilY();
+        }
+    }
+
+    void StopRecoilX()
+    {
+        stepXRecoiled = 0;
+        pState.recoilingX = false;
+    }
+
+    void StopRecoilY()
+    {
+        stepYRecoiled = 0;
+        pState.recoilingY = false;
+    }
+
+    public void TakeDamage(float _damage)
+    {
+        if (pState.alive)
+        {
+            audioSources.PlayOneShot(hurtSound);
+            Health -= Mathf.RoundToInt(_damage);
+            if (Health <= 0)
+            {
+                Health = 0;
+                StartCoroutine(Death());
+            }
+            else
+            {
+                StartCoroutine(StopTakingDamage());
+            }
+        }
+    }
+
+    IEnumerator StopTakingDamage()
+    {
+        pState.invincible = true;
+        anim.SetTrigger("takeDamage");
+        GameObject _bloodSplitParticle = Instantiate(bloodSplit, transform.position, Quaternion.identity);
+        Destroy(_bloodSplitParticle, 1f);
+        yield return new WaitForSeconds(1f);
+        pState.invincible = false;
+    }
+
+    void FlashWhileInvincible()
+    {
+        sr.color = pState.invincible ? Color.Lerp(Color.white, Color.black, Mathf.PingPong(Time.time * hitFlashSpeed, 1.0f)) : Color.white;
+    }
+
+    IEnumerator Death()
+    {
+        pState.alive = false;
+        Time.timeScale = 1f;
+        GameObject _bloodSplitParticle = Instantiate(bloodSplit, transform.position, Quaternion.identity);
+        Destroy(_bloodSplitParticle, 1f);
+        anim.SetTrigger("Death");
+        audioSources.PlayOneShot(deathSound);
+        rb.constraints = RigidbodyConstraints2D.FreezePosition;
+        GetComponent<BoxCollider2D>().enabled = false;
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(UIManager.Instance.ActivateDeathScreen());
+        yield return new WaitForSeconds(1f);
+        Instantiate(GameManager.Instance.Shade, transform.position, Quaternion.identity);
+    }
+    public void Respawn()
+    {
+        if (!pState.alive)
+        {
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            GetComponent<BoxCollider2D>().enabled = true;
+            pState.alive = true;
+            respawnMana = true;
+            UIManager.Instance.ManaSwitch(UIManager.ManaState.Respawn);
+            Mana = 0;
+            Health = maxHealth;
+            anim.Play("idle");
+        }
+    }
+
+    public void RestoreMana()
+    {
+        respawnMana = false;
+        UIManager.Instance.ManaSwitch(UIManager.ManaState.Full);
+    }
+    public int Health
+    {
+        get { return health; }
+        set
+        {
+            if (health != value)
+            {
+                health = Mathf.Clamp(value, 0, maxHealth);
+
+                if (OnHealthChangedCallback != null)
+                { OnHealthChangedCallback.Invoke(); }
+            }
+        }
+    }
+
+    void Heal()
+    {
+        if (Input.GetButton("Cast/Heal") && castorhealTimer > 0.05 && Health < maxHealth && Mana > 0 && Grounded() && !pState.dashing)
+        {
+            pState.healing = true;
+            rb.velocity = Vector2.zero;
+            if (activeHealingVFX == null)
+            {
+                activeHealingVFX = Instantiate(HealingVFX, transform);
+            }
+
+            healTimer += Time.deltaTime;
+            if (healTimer >= timetoHeal)
+            {
+                Health++;
+                healTimer = 0;
+            }
+
+            Mana -= manaDrainSpeed * Time.deltaTime;
+        }
+        else
+        {
+            pState.healing = false;
+            healTimer = 0;
+            if (activeHealingVFX != null)
+            {
+                Destroy(activeHealingVFX);
+                activeHealingVFX = null;
+            }
+        }
+    }
+
+    public float Mana
+    {
+        get { return mana; }
+        set
+        {
+            if (mana != value)
+            {
+                if (!respawnMana)
+                {
+                    mana = Mathf.Clamp(value, 0, 1);
+                }
+                else
+                {
+                    mana = Mathf.Clamp(value, 0, 0.5f);
+                }
+
+                manaStorage.fillAmount = Mana;
+            }
+        }
+    }
+
+    void CastSpell()
+    {
+        if (Input.GetButtonUp("Cast/Heal") && castorhealTimer <= 0.05f && Mana >= manaSpellCost && timeSinceCast >= timeBetweenCast)
+        {
+            pState.casting = true;
+            timeSinceCast = 0;
+            StartCoroutine(CastCoroutine());
+        }
+        else
+        {
+            timeSinceCast += Time.deltaTime;
+        }
+    }
+
+    IEnumerator CastCoroutine()
+    {
+        
+
+        if ((yAxis == 0 || (yAxis < 0 && Grounded())) && unlockingSideSpell)
+        {   
+            audioSources.PlayOneShot(sideSpellSound);
+            anim.SetBool("Casting", true);
+            yield return new WaitForSeconds(0.15f);
+            GameObject _fireBall = Instantiate(SideSpellCast, SideAttackTransform.position, Quaternion.identity);
+            
+            if (pState.lookingRight)
+            {
+                _fireBall.transform.eulerAngles = Vector3.zero;
+            }
+            else
+            {
+                _fireBall.transform.eulerAngles = new Vector2(_fireBall.transform.eulerAngles.x, 180);
+            }
+            pState.recoilingX = true;
+            Mana -= manaSpellCost;
+            yield return new WaitForSeconds(0.25f);
+
+        }
+
+        else if (yAxis > 0 && unlockingUpSpell)
+        {
+            audioSources.PlayOneShot(upSpellSound);
+            Instantiate(UpSpellCast, transform);
+            rb.velocity = Vector2.zero;
+            Mana -= manaSpellCost;
+            yield return new WaitForSeconds(0.25f);
+        }
+
+        else if (yAxis < 0 && !Grounded())
+        {
+            rb.velocity = new Vector2(rb.velocity.x, -downSpellForce);
+            if (Grounded())
+            {
+                Instantiate(DownSpellFinished, transform.position, Quaternion.identity);
+            }
+        }
+        anim.SetBool("Casting", false);
+        pState.casting = false;
+    }
+
+    public bool Grounded()
+    {
+        if (Physics2D.Raycast(groundCheckPoint.position, Vector2.down, groundCheckY, whatisGround)
+            || Physics2D.Raycast(groundCheckPoint.position + new Vector3(groundCheckX, 0, 0), Vector2.down, groundCheckY, whatisGround)
+            || Physics2D.Raycast(groundCheckPoint.position + new Vector3(-groundCheckX, 0, 0), Vector2.down, groundCheckY, whatisGround))
+            return true;
+        else
+            return false;
+    }
+
+    void UpdateJumpVariables()
+    {
+        if (Grounded())
+        {
+            if (!landingSoundisPlayed)
+            {
+                audioSources.PlayOneShot(landingSound);
+                landingSoundisPlayed = true;
+            }
+            pState.jumping = false;
+            coyoteTimeCounter = coyoteTime;
+            airJumpCounter = 0;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+            landingSoundisPlayed = false;
+        }
+
+        if (Input.GetButtonDown("Jump"))
+            jumpBufferCounter = jumpBufferFrames;
+        else
+            jumpBufferCounter--;
+    }
+
+    private bool Wall()
+    {
+        return Physics2D.OverlapCircle(wallCheck.position, 0.1f, walllayer);
+    }
+
+    void WallSlide()
+    {
+        if (Wall() && !Grounded() && xAxis != 0)
+        {
+            isSliding = true;
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlideSpeed, float.MaxValue));
+        }
+        else
+        {
+            isSliding = false;
+        }
+    }
+    void WallJump()
+    {
+        if (isSliding)
+        {
+            isWallJumping = false;
+            wallJumpingDirection = !pState.lookingRight ? 1 : -1;
+            CancelInvoke(nameof(StopWallJump));
+        }
+        if (Input.GetButtonDown("Jump") && isSliding)
+        {
+            isWallJumping = true;
+            rb.velocity = new Vector2(wallJumpingPower.x * wallJumpingDirection, wallJumpingPower.y);
+            dashed = false;
+            airJumpCounter = 0;
+            pState.lookingRight = !pState.lookingRight;
+            transform.eulerAngles = new Vector2(transform.eulerAngles.x, 180);
+            Invoke(nameof(StopWallJump), wallJumpingDuration);
+        }
+    }
+    void StopWallJump()
+    {
+        isWallJumping = false;
+        transform.eulerAngles = new Vector2(transform.eulerAngles.x, 0);
+    }
+    void Jump()
+    {
+
+        if (jumpBufferCounter > 0 && coyoteTimeCounter > 0 && !pState.jumping)
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                audioSources.PlayOneShot(jumpSound);
+            }
+
+            rb.velocity = new Vector3(rb.velocity.x, jumpForce);
+            pState.jumping = true;
+            jumpBufferCounter = 0;
+        }
+        if (!Grounded() && airJumpCounter < maxAirJumps && Input.GetButtonDown("Jump") && unlockingDoubleJump)
+        {
+            audioSources.PlayOneShot(jumpSound);
+            pState.jumping = true;
+            airJumpCounter++;
+            rb.velocity = new Vector3(rb.velocity.x, jumpForce);
+        }
+
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 3)
+        {
+            dust.Play();
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            pState.jumping = false;
+        }
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -maxFallSpeed, rb.velocity.y));
+
+        anim.SetBool("Jumping", !Grounded());
+    }
+}
