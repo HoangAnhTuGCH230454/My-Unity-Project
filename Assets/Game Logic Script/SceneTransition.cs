@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +5,10 @@ public class SceneTransition : MonoBehaviour
 {
 
     [SerializeField] private string Transitionto;
+
+    public Color fadeColor = Color.black;
+    public float fadeTime = 0.5f;
+
     [SerializeField] private Transform Startpoint;
     [SerializeField] private Vector2 Exit;
     [SerializeField] private float Endtime;
@@ -18,7 +20,7 @@ public class SceneTransition : MonoBehaviour
 
             StartCoroutine(PlayerController.Instance.WalktoScene(Exit, Endtime));
         }
-        StartCoroutine(UIManager.Instance.sceneFaded.Fade(SceneFaded.FadeDirection.Out));
+        StartCoroutine(UiScreen.FadeTo(fadeColor, 1, fadeTime));
     }
 
     private void OnTriggerEnter2D(Collider2D _other)
@@ -30,7 +32,7 @@ public class SceneTransition : MonoBehaviour
             PlayerController.Instance.pState.cutscene = true;
             SceneManager.LoadScene(Transitionto);
         }
-        StartCoroutine(UIManager.Instance.sceneFaded.FadeandLoad(SceneFaded.FadeDirection.In, Transitionto));
+        UIManager.Instance.LoadScene(Transitionto, fadeTime);
     }
     void CheckShade()
     {

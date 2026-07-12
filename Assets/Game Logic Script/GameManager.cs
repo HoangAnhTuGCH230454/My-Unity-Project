@@ -4,16 +4,18 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[DisallowMultipleComponent]
 public class GameManager : MonoBehaviour
 {
     public string Transitionfrom;
 
     public Vector2 PlatformrespawnPoint;
     public Vector2 respawnAfterDeath;
+    public Vector2 defaultRespawnpoint;
     [SerializeField] LightSpot lightSpot;
 
     public GameObject Shade;
-    [SerializeField] private FadeUI pauseMenu;
+    [SerializeField] private UiScreen pauseMenu;
     [SerializeField] private float fadeTime;
     public bool isPaused;
     float lasttimeScale = -1f;
@@ -44,6 +46,10 @@ public class GameManager : MonoBehaviour
     }
     public void Pause(bool pausing)
     {
+        if (pauseMenu.isAnimate())
+        {
+            return;
+        }
         if (pausing)
         {
             if (lasttimeScale < 0)
@@ -51,16 +57,17 @@ public class GameManager : MonoBehaviour
                 lasttimeScale = Time.timeScale;
             }
             Time.timeScale = 0;
+            pauseMenu.Activate();
         }
         else
         {
             if (!isStopped)
             {
-                Time.timeScale = lasttimeScale;
+                Time.timeScale = lasttimeScale > 0f ? lasttimeScale : 1f;
                 lasttimeScale = -1f;
             }
+            pauseMenu.Deactivate();
         }
-        pauseMenu.Fade(fadeTime, pausing);
         isPaused = pausing;
     }
 
@@ -80,7 +87,7 @@ public class GameManager : MonoBehaviour
             Instance.lasttimeScale = Time.timeScale;
         }
 
-        Time.timeScale = Instance.lasttimeScale * slowMultiply;
+        Time.timeScale = Mathf.Max(0, Instance.lasttimeScale * slowMultiply);
         WaitForEndOfFrame wait = new WaitForEndOfFrame();
         while (duration > 0)
         {
@@ -89,7 +96,7 @@ public class GameManager : MonoBehaviour
                 yield return wait;
                 continue;
             }
-            Time.timeScale = Instance.lasttimeScale * slowMultiply;
+            Time.timeScale = Mathf.Max(0, Instance.lasttimeScale * slowMultiply);
             duration -= Time.unscaledDeltaTime;
             yield return wait;
         }
@@ -113,13 +120,13 @@ public class GameManager : MonoBehaviour
                     yield break;
                 }
                 currentTimeScale += restoreSpeed * Time.unscaledDeltaTime;
-                Time.timeScale = currentTimeScale;
+                Time.timeScale = Mathf.Max(0, currentTimeScale);
                 yield return wait;
             }
         }
         if (!isStopped)
         {
-            Time.timeScale = timeScaleToRestore;
+            Time.timeScale = Mathf.Max(0, timeScaleToRestore);
         }
     }
     public void SaveGame()
@@ -140,16 +147,16 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(SaveData.saveinstance.spotSceneName);
         }
-        if (SaveData.saveinstance.lightPos != null)
+        if (Mathf.Approximately(SaveData.saveinstance.lightPos.sqrMagnitude, 0))
         {
             respawnAfterDeath = SaveData.saveinstance.lightPos;
         }
         else
         {
-            respawnAfterDeath = PlatformrespawnPoint;
+            respawnAfterDeath = defaultRespawnpoint;
         }
         PlayerController.Instance.transform.position = respawnAfterDeath;
-        StartCoroutine(UIManager.Instance.DeactivateDeathScreen());
+        UIManager.Instance.deathScreen.Deactivate();
         PlayerController.Instance.Respawn();
     }
     private void OnEnable()
@@ -177,7 +184,7 @@ public class GameManager : MonoBehaviour
         }
         if (UIManager.Instance != null)
         {
-            StartCoroutine(UIManager.Instance.DeactivateDeathScreen());
+            UIManager.Instance.deathScreen.Deactivate();
         }
         SaveScene();
         DontDestroyOnLoad(gameObject);

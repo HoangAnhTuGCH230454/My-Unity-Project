@@ -547,7 +547,7 @@ public class PlayerController : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.FreezePosition;
         GetComponent<BoxCollider2D>().enabled = false;
         yield return new WaitForSeconds(1f);
-        StartCoroutine(UIManager.Instance.ActivateDeathScreen());
+        UIManager.Instance.deathScreen.Activate();
         yield return new WaitForSeconds(1f);
         Instantiate(GameManager.Instance.Shade, transform.position, Quaternion.identity);
     }

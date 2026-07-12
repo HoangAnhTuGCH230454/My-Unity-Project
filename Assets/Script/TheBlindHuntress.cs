@@ -109,6 +109,15 @@ public class TheBlindHuntress : Enemy
             rb.velocity = Vector2.zero;
         }
     }
+
+    public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
+    {
+        base.EnemyHit(_damageDone, _hitDirection, _hitForce);
+        EnemyGethits();
+    }
+
+    // TheBlindHuntress.cs
+    public static event System.Action OnBossDefeated;
     public void Flip()
     {
         if (PlayerController.Instance.transform.position.x < transform.position.x && transform.localScale.x > 0)
@@ -326,5 +335,6 @@ public class TheBlindHuntress : Enemy
     public void DestroyAfterDeath()
     {
         Destroy(gameObject);
+        OnBossDefeated?.Invoke();
     }
 }

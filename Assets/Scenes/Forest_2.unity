@@ -4472,11 +4472,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1728105305800740620, guid: e9a12fb9ad4d7564ebd2f21a204437e0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -708.4267
+      value: -308.76764
       objectReference: {fileID: 0}
     - target: {fileID: 1728105305800740620, guid: e9a12fb9ad4d7564ebd2f21a204437e0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 122
+      value: -71.03412
       objectReference: {fileID: 0}
     - target: {fileID: 1728105305800740620, guid: e9a12fb9ad4d7564ebd2f21a204437e0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -34461,7 +34461,7 @@ GameObject:
   - component: {fileID: 1128613611}
   - component: {fileID: 1128613610}
   - component: {fileID: 1128613609}
-  - component: {fileID: 1128613608}
+  - component: {fileID: 1128613612}
   m_Layer: 0
   m_Name: Boss Room Door (2)
   m_TagString: Untagged
@@ -34469,21 +34469,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1128613608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1128613607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ced6c9056e4151744bdcbc8c56e3a7f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1266780961}
-  boss: {fileID: 4149138961548336492, guid: acc966823f09b5d4e82fea3431f1ffa8, type: 3}
-  exitDir: {x: 1, y: 0}
 --- !u!61 &1128613609
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -34590,12 +34575,24 @@ Transform:
   m_GameObject: {fileID: 1128613607}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 404.2, y: -221.3, z: 0}
+  m_LocalPosition: {x: 401.6, y: -221.3, z: 0}
   m_LocalScale: {x: 7.826265, y: 7.826265, z: 7.826265}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!114 &1128613612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128613607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b70a5e665ec1f9448c5502380f6f158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1129188397
 GameObject:
   m_ObjectHideFlags: 0
@@ -64392,7 +64389,7 @@ GameObject:
   - component: {fileID: 2085454078}
   - component: {fileID: 2085454077}
   - component: {fileID: 2085454076}
-  - component: {fileID: 2085454075}
+  - component: {fileID: 2085454079}
   m_Layer: 0
   m_Name: Boss Room Door (1)
   m_TagString: Untagged
@@ -64400,21 +64397,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2085454075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2085454074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ced6c9056e4151744bdcbc8c56e3a7f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1266780961}
-  boss: {fileID: 4149138961548336492, guid: acc966823f09b5d4e82fea3431f1ffa8, type: 3}
-  exitDir: {x: 1, y: 0}
 --- !u!61 &2085454076
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -64521,12 +64503,24 @@ Transform:
   m_GameObject: {fileID: 2085454074}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 474.5, y: -221.3, z: 0}
+  m_LocalPosition: {x: 475.7, y: -221.3, z: 0}
   m_LocalScale: {x: 7.826265, y: 7.826265, z: 7.826265}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2085454079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2085454074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b70a5e665ec1f9448c5502380f6f158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2086384421
 GameObject:
   m_ObjectHideFlags: 0

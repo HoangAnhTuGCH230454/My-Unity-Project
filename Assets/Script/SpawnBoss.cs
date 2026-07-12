@@ -51,10 +51,13 @@ public class SpawnBoss : MonoBehaviour
         yield return new WaitForSeconds(1f);
         boxCollider.isTrigger = false;
         Instantiate(boss, spawnPoint.position, Quaternion.identity);
+        OnBossFightStarted?.Invoke(); // NEW
     }
 
     public void isNotTrigger()
     {
         boxCollider.isTrigger = true;
     }
+
+    public static event System.Action OnBossFightStarted;
 }

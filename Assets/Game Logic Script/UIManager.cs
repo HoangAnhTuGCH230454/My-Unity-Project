@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class UIManager : UiScreen
 {
-    public SceneFaded sceneFaded;
 
     public static UIManager Instance;
 
-    [SerializeField] GameObject deathScreen;
+    [Header("Ui Manager")]
+    [SerializeField] public UiScreen deathScreen;
     [SerializeField] public GameObject inventory;
 
     [SerializeField] GameObject respawnMana, fullMana;
@@ -21,17 +19,17 @@ public class UIManager : MonoBehaviour
 
     public ManaState manaState;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-        }
+
         DontDestroyOnLoad(gameObject);
+        Instance = this;
     }
 
     public void ManaSwitch(ManaState _manastate)
@@ -49,23 +47,5 @@ public class UIManager : MonoBehaviour
                 break;
         }
         manaState = _manastate;
-    }
-
-    public IEnumerator ActivateDeathScreen()
-    {
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(sceneFaded.Fade(SceneFaded.FadeDirection.In));
-        yield return new WaitForSeconds(1.4f);
-        deathScreen.SetActive(true);
-    }
-    public IEnumerator DeactivateDeathScreen()
-    {
-        yield return new WaitForSeconds(0.5f);
-        deathScreen.SetActive(false);
-        StartCoroutine(sceneFaded.Fade(SceneFaded.FadeDirection.Out));
-    }
-    private void Start()
-    {
-        sceneFaded = GetComponentInChildren<SceneFaded>();
     }
 }
