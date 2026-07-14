@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] Image heartShards;
+    [SerializeField] Image manaShards;
     [SerializeField] GameObject UpSpell, SideSpell;
     [SerializeField] GameObject DbJump, Dash, WallJump;
     private void OnEnable()
@@ -13,8 +14,8 @@ public class InventoryManager : MonoBehaviour
         if (PlayerController.Instance == null)
             return;
 
-        if (heartShards != null)
-            heartShards.fillAmount = PlayerController.Instance.heartShards * 0.25f;
+        heartShards.fillAmount = PlayerController.Instance.heartShards * (1 / PlayerController.Instance.heartShardsPerHealth);
+        manaShards.fillAmount = PlayerController.Instance.manaShards * (1 / PlayerController.Instance.manaShardsPerExcessUnit);
         if (PlayerController.Instance.unlockingUpSpell)
         {
             UpSpell.SetActive(true);

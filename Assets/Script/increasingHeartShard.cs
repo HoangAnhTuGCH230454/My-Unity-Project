@@ -32,13 +32,14 @@ public class increasingHeartShard : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
         yield return new WaitForSeconds(0.5f);
         canvasUI.SetActive(true);
-        heartShards.InitialFillAmount = PlayerController.Instance.heartShards * 0.25f;
+        heartShards.InitialFillAmount = PlayerController.Instance.heartShards / PlayerController.Instance.heartShardsPerHealth;
         PlayerController.Instance.heartShards++;
-        heartShards.fillAmount = PlayerController.Instance.heartShards * 0.25f;
+        heartShards.fillAmount = PlayerController.Instance.heartShards / PlayerController.Instance.heartShardsPerHealth;
 
         StartCoroutine(heartShards.LerpFill());
 
         yield return new WaitForSeconds(2.5f);
+        PlayerController.Instance.ConvertHeartShards();
         SaveData.saveinstance.SavePlayerData();
         canvasUI.SetActive(false);
         Destroy(gameObject);

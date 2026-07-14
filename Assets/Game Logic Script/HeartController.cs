@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Obsolete]
 public class HeartController : MonoBehaviour
 {
     PlayerController player;

@@ -9,17 +9,7 @@ public class HeartShards : MonoBehaviour
     public float fillAmount;
     public float lerpDuration = 1.5f;
     public float InitialFillAmount;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    
     public IEnumerator LerpFill()
     {
         float elarpseTime = 0f;
@@ -35,7 +25,7 @@ public class HeartShards : MonoBehaviour
         if (fill.fillAmount == 1)
         {
             PlayerController.Instance.maxHealth++;
-            PlayerController.Instance.OnHealthChangedCallback();
+            UIManager.UpdateHealthUI(PlayerController.Instance.health, PlayerController.Instance.maxHealth, PlayerController.Instance.excessHealth);
             PlayerController.Instance.heartShards = 0;
         }
     }

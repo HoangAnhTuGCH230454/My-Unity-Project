@@ -75,11 +75,13 @@ public class PlayerController : MonoBehaviour
     public int health;
     public int maxHealth;
     public int maxTotalHealth = 10;
+    public int excessHealth = 0;
     public int heartShards;
+    [Min(1)] public int heartShardsPerHealth = 4;
     [SerializeField] GameObject bloodSplit;
     [SerializeField] float hitFlashSpeed;
-    public delegate void OnHealthChangeDelegate();
-    [HideInInspector] public OnHealthChangeDelegate OnHealthChangedCallback;
+    [System.Obsolete] public delegate void OnHealthChangeDelegate();
+    [System.Obsolete] public OnHealthChangeDelegate OnHealthChangedCallback;
     [SerializeField] GameObject HealingVFX;
     private GameObject activeHealingVFX;
 
@@ -88,14 +90,24 @@ public class PlayerController : MonoBehaviour
     [Space(5)]
 
     [Header("Mana Setting")]
-    [SerializeField] UnityEngine.UI.Image manaStorage;
-    [SerializeField] float mana;
-    [SerializeField] float manaDrainSpeed;
-    [SerializeField] float manaGain;
-    public bool respawnMana;
+    public float mana = 3;
+    public float maxMana = 3;
+    [Range(0, 1)] public float manaPenalty = 0f;
+
+    [Header("Excess Mana Settings")]
+    public float excessMana = 0;
+    public int excessMaxManaUnits = 0, excessMaxManaUnitsLimit = 3;
+    public float manaPerExcessUnit = 1f;
+    [SerializeField] float excessManaRestoreDelay = 3f, excessManaRestoreRate = 1f;
+    float excessManaRestoreCooldown = 0f;
+
+    public int manaShards = 0;
+    [Min(1)] public int manaShardsPerExcessUnit = 4;
     [Space(5)]
 
     [Header("Spell Setting")]
+    [SerializeField] float attackManaGain = 0.34f;
+    [SerializeField] float healManaCostPerSec = 1f;
     [SerializeField] float manaSpellCost = 0.3f;
     [SerializeField] float timeBetweenCast;
     [SerializeField] float spellDamage;
@@ -159,31 +171,12 @@ public class PlayerController : MonoBehaviour
         gravity = rb.gravityScale;
         pState.dashing = false;
         Mana = mana;
-        manaStorage.fillAmount = Mana;
         Health = maxHealth;
         SaveData.saveinstance.LoadPlayerData();
 
         FindObjectOfType<HeartController>().InstantiateHeartsContainer();
 
-        if (respawnMana == true)
-        {
-            UIManager.Instance.ManaSwitch(UIManager.ManaState.Respawn);
-        }
-        else
-        {
-            UIManager.Instance.ManaSwitch(UIManager.ManaState.Full);
-        }
-
-        if (OnHealthChangedCallback != null)
-        { 
-            OnHealthChangedCallback.Invoke();
-        }
-
-        if (Health == 0)
-        {
-            pState.alive = false;
-            GameManager.Instance.respawnPlayer();
-        }
+        UIManager.UpdateHealthUI(health, maxHealth, excessHealth);
     }
 
     private void OnDrawGizmos()
@@ -194,12 +187,27 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireCube(DownAttackTransform.position, DownAttackArea);
     }
 
+    void HandleRestoreManaWithExcess()
+    {
+        if (excessManaRestoreCooldown > 0)
+        {
+            excessManaRestoreCooldown -= Time.deltaTime;
+        }
+        else if (Mana < maxMana && excessMana > 0f)
+        {
+            float restoreAmount = Mathf.Min(excessMana, excessManaRestoreRate * Time.deltaTime);
+            Mana += restoreAmount;
+            excessMana -= restoreAmount;
+        }
+    }
+
     void Update()
     {
         if (pState.cutscene || GameManager.Instance.isPaused) return;
 
         if (pState.alive)
         {
+            HandleRestoreManaWithExcess();
             GetInputs();
             ToggleInventory();
         }
@@ -416,6 +424,7 @@ public class PlayerController : MonoBehaviour
     void Hit(Transform _attackTransform, Vector2 _attackArea, ref bool _recoilBool, Vector2 _recoilDir, float _recoilStrength)
     {
         Collider2D[] objectsToHit = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0, attackableLayer);
+        List<Enemy> hitEnemies = new List<Enemy>();
 
         if (objectsToHit.Length > 0)
         {
@@ -424,13 +433,15 @@ public class PlayerController : MonoBehaviour
 
         for (int i = 0; i < objectsToHit.Length; i++)
         {
-            if (objectsToHit[i].GetComponent<Enemy>() != null)
+            Enemy e = objectsToHit[i].GetComponent<Enemy>();
+            if (e && !hitEnemies.Contains(e))
             {
-                objectsToHit[i].GetComponent<Enemy>().EnemyHit(damage, _recoilDir, _recoilStrength);
+                e.EnemyHit(damage, _recoilDir, _recoilStrength);
+                hitEnemies.Add(e);
 
                 if (objectsToHit[i].CompareTag("Enemy"))
                 {
-                    Mana += manaGain;
+                    Mana += attackManaGain;
                 }
             }
         }
@@ -508,6 +519,21 @@ public class PlayerController : MonoBehaviour
         if (pState.alive)
         {
             audioSources.PlayOneShot(hurtSound);
+
+            if (excessHealth > 0)
+            {
+                if (excessHealth > -damage)
+                {
+                    excessHealth -= Mathf.RoundToInt(_damage);
+                    _damage = 0;
+                }
+                else
+                {
+                    _damage -= excessHealth;
+                    excessHealth = 0;
+                }
+            }
+
             Health -= Mathf.RoundToInt(_damage);
             if (Health <= 0)
             {
@@ -551,26 +577,34 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Instantiate(GameManager.Instance.Shade, transform.position, Quaternion.identity);
     }
-    public void Respawn()
+    public void Respawn(float manaPenalty = 0.5f)
     {
         if (!pState.alive)
         {
-            rb.constraints = RigidbodyConstraints2D.None;
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            if (rb)
+            {
+                rb.constraints = RigidbodyConstraints2D.None;
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
+            if (anim)
+            {
+                anim.Play("Player_Idle");
+            }
+
             GetComponent<BoxCollider2D>().enabled = true;
             pState.alive = true;
-            respawnMana = true;
-            UIManager.Instance.ManaSwitch(UIManager.ManaState.Respawn);
-            Mana = 0;
+
+            this.manaPenalty = manaPenalty;
+            mana = excessMana = 0;
+            UIManager.UpdateManaUI(mana, maxMana, excessMana, ExcessMaxMana, 1f - manaPenalty);
+
             Health = maxHealth;
-            anim.Play("idle");
         }
     }
 
     public void RestoreMana()
     {
-        respawnMana = false;
-        UIManager.Instance.ManaSwitch(UIManager.ManaState.Full);
+        manaPenalty = 0f;
     }
     public int Health
     {
@@ -580,10 +614,34 @@ public class PlayerController : MonoBehaviour
             if (health != value)
             {
                 health = Mathf.Clamp(value, 0, maxHealth);
-
-                if (OnHealthChangedCallback != null)
-                { OnHealthChangedCallback.Invoke(); }
+                UIManager.UpdateHealthUI(health, maxHealth, excessHealth);
             }
+        }
+    }
+
+    public int ExcessHealth
+    {
+        get { return excessHealth; } 
+        set 
+        {
+            if (excessHealth != value)
+            {
+                excessHealth = Mathf.Clamp(value, 0, excessHealth);
+                UIManager.UpdateHealthUI(health, maxHealth, excessHealth);
+            }
+        }
+    }
+
+    public void ConvertHeartShards()
+    {
+        int remainingUnits = maxTotalHealth - maxHealth;
+        if (heartShards >= heartShardsPerHealth && remainingUnits > 0)
+        {
+            int awardedUnits = Mathf.Min(remainingUnits, heartShards / heartShardsPerHealth);
+            maxHealth += awardedUnits;
+            heartShards -= awardedUnits * heartShardsPerHealth;
+
+            UIManager.UpdateHealthUI(health, maxHealth, excessHealth);
         }
     }
 
@@ -605,7 +663,7 @@ public class PlayerController : MonoBehaviour
                 healTimer = 0;
             }
 
-            Mana -= manaDrainSpeed * Time.deltaTime;
+            Mana -= Time.deltaTime * healManaCostPerSec;
         }
         else
         {
@@ -624,19 +682,45 @@ public class PlayerController : MonoBehaviour
         get { return mana; }
         set
         {
-            if (mana != value)
+            float excess = value - MaxMana;
+            if (excess > 0)
             {
-                if (!respawnMana)
-                {
-                    mana = Mathf.Clamp(value, 0, 1);
-                }
-                else
-                {
-                    mana = Mathf.Clamp(value, 0, 0.5f);
-                }
-
-                manaStorage.fillAmount = Mana;
+                mana = MaxMana;
+                excessMana += excess;
             }
+            else
+            {
+                if (value < mana)
+                {
+                    excessManaRestoreCooldown = excessManaRestoreDelay;
+                }
+                mana = Mathf.Max(0, value);
+            }
+            UIManager.UpdateManaUI(mana, maxMana, excessMana, ExcessMaxMana, 1- manaPenalty);
+        }
+    }
+
+    public float MaxMana
+    {
+        get { return maxMana * (1 - manaPenalty); }
+    }
+
+    public float ExcessMaxMana
+    {
+        get { return excessMaxManaUnits * manaPerExcessUnit; }
+    }
+
+    public void ConvertManaShards()
+    {
+        int remainingUnits = excessMaxManaUnitsLimit - excessMaxManaUnits;
+        if (manaShards >= manaShardsPerExcessUnit && remainingUnits > 0)
+        {
+            int awardedUnits = Mathf.Min(remainingUnits, manaShards / manaShardsPerExcessUnit);
+
+            excessMaxManaUnits += awardedUnits;
+            manaShards -= awardedUnits * manaShardsPerExcessUnit;
+
+            UIManager.UpdateManaUI(mana, maxMana, excessMana, ExcessMaxMana);
         }
     }
 

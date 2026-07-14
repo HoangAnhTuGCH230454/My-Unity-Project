@@ -140,7 +140,7 @@ public class GameManager : MonoBehaviour
         SaveData.saveinstance.sceneNames.Add(currentSceneName);
     }
 
-    public void respawnPlayer()
+    public void respawnPlayer(float manaPenalty = 0f)
     {
         SaveData.saveinstance.LoadLightSpot();
         if (SaveData.saveinstance.spotSceneName != null)
@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour
         }
         PlayerController.Instance.transform.position = respawnAfterDeath;
         UIManager.Instance.deathScreen.Deactivate();
-        PlayerController.Instance.Respawn();
+        PlayerController.Instance.Respawn(manaPenalty);
     }
     private void OnEnable()
     {
@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour
     {
         if (PlayerController.Instance != null)
         {
-            if (PlayerController.Instance.respawnMana)
+            if (PlayerController.Instance.manaPenalty > 0f)
             {
                 SaveData.saveinstance.LoadShadeData();
                 if (SaveData.saveinstance.scenewithShade == UnityEngine.SceneManagement.SceneManager.GetActiveScene().name || SaveData.saveinstance.scenewithShade == "")

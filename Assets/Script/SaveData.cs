@@ -19,7 +19,9 @@ public struct SaveData
     public int playerHealthMax;
     public int playerHeartShards;
     public float playerMana;
-    public bool playerRespawnMana;
+    public float playerExcessMana;
+    public int playerManaShards;
+    public float playerManaPenalty;
     public Vector2 playerPosition;
     public string lastScene;
 
@@ -81,8 +83,12 @@ public struct SaveData
             writer.Write(playerHeartShards);
             playerMana = PlayerController.Instance.Mana;
             writer.Write(playerMana);
-            playerRespawnMana = PlayerController.Instance.respawnMana;
-            writer.Write(playerRespawnMana);
+            playerManaPenalty = PlayerController.Instance.manaPenalty;
+            writer.Write(playerManaPenalty);
+            playerManaPenalty = PlayerController.Instance.manaPenalty;
+            writer.Write(playerManaPenalty);
+            playerManaPenalty = PlayerController.Instance.manaPenalty;
+            writer.Write(playerManaPenalty);
             playerUnlockedWallJump = PlayerController.Instance.unlockingWallJump;
             writer.Write(playerUnlockedWallJump);
             playerUnlockedDash = PlayerController.Instance.unlockingDash;
@@ -111,7 +117,7 @@ public struct SaveData
                 playerHealthMax = reader.ReadInt32();
                 playerHeartShards = reader.ReadInt32();
                 playerMana = reader.ReadSingle();
-                playerRespawnMana = reader.ReadBoolean();
+                playerManaPenalty = reader.ReadSingle();
                 playerUnlockedWallJump = reader.ReadBoolean();
                 playerUnlockedDash = reader.ReadBoolean();
                 playerUnlockedDoubleJump = reader.ReadBoolean();
@@ -127,7 +133,7 @@ public struct SaveData
                 PlayerController.Instance.maxHealth = playerHealthMax;
                 PlayerController.Instance.heartShards = playerHeartShards;
                 PlayerController.Instance.Mana = playerMana;
-                PlayerController.Instance.respawnMana = playerRespawnMana;
+                PlayerController.Instance.manaPenalty = playerManaPenalty;
                 PlayerController.Instance.unlockingWallJump = playerUnlockedWallJump;
                 PlayerController.Instance.unlockingDash = playerUnlockedDash;
                 PlayerController.Instance.unlockingDoubleJump = playerUnlockedDoubleJump;
@@ -141,7 +147,7 @@ public struct SaveData
             PlayerController.Instance.Health = PlayerController.Instance.maxHealth;
             PlayerController.Instance.Mana = 0.5f;
             PlayerController.Instance.heartShards = 0;
-            PlayerController.Instance.respawnMana = false;
+            PlayerController.Instance.manaPenalty = 0;
             PlayerController.Instance.unlockingWallJump = false;
             PlayerController.Instance.unlockingDash = false;
             PlayerController.Instance.unlockingDoubleJump = false;

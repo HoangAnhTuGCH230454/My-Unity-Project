@@ -6,46 +6,37 @@ public class UIManager : UiScreen
     public static UIManager Instance;
 
     [Header("Ui Manager")]
-    [SerializeField] public UiScreen deathScreen;
-    [SerializeField] public GameObject inventory;
+    public UiHealth healthUI;
+    public UiMana manaUI;
+    public UiScreen deathScreen;
+    public GameObject inventory;
 
-    [SerializeField] GameObject respawnMana, fullMana;
-
-    public enum ManaState
+    public static void UpdateHealthUI(int health, int maxHealth, int excessHealth = 0)
     {
-        Full,
-        Respawn
+        if (Instance && Instance.healthUI)
+        {
+            Instance.healthUI.Refresh(health, maxHealth, excessHealth);
+        }
     }
-
-    public ManaState manaState;
+    public static void UpdateManaUI(float mana, float maxMana, float excessMana, float excessMaxMana, float manaPenalty = 1f)
+    {
+        if (Instance && Instance.manaUI)
+        {
+            Instance.manaUI.Refresh(mana, maxMana, excessMana, excessMaxMana);
+        }
+        Instance.manaUI.SetMode(manaPenalty);
+    }
 
     protected override void Awake()
     {
-        base.Awake();
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
+        base.Awake();
 
         DontDestroyOnLoad(gameObject);
         Instance = this;
-    }
-
-    public void ManaSwitch(ManaState _manastate)
-    {
-        switch(_manastate)
-        {
-            case ManaState.Full:
-                fullMana.SetActive(true);
-                respawnMana.SetActive(false);
-                break;
-
-            case ManaState.Respawn:
-                fullMana.SetActive(false);
-                respawnMana.SetActive(true);
-                break;
-        }
-        manaState = _manastate;
     }
 }
