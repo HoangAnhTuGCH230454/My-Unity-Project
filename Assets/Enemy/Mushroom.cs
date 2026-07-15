@@ -10,7 +10,6 @@ public class Mushroom : Enemy
     [SerializeField] private LayerMask whatIsGround;
 
     float timer;
-    private Animator anim;
 
     protected override void Start()
     {

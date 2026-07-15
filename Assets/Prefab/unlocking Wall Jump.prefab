@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 5559118839469522900}
   - component: {fileID: 24493705900381090}
   - component: {fileID: 3279372129718242408}
-  - component: {fileID: 8285048644841741007}
+  - component: {fileID: 984549320082827145}
   m_Layer: 0
   m_Name: unlocking Wall Jump
   m_TagString: Untagged
@@ -308,7 +308,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &8285048644841741007
+--- !u!114 &984549320082827145
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -317,11 +317,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 5874301900000885427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75f8ebf35be9b7745a235c61ff57b565, type: 3}
+  m_Script: {fileID: 11500000, guid: 88c760558b4160a49a40d741d6306672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particle: {fileID: 8246776749872259220, guid: 836989564b3b264488ca1ea4cd874746, type: 3}
-  canvasUI: {fileID: 7850279758898318339}
+  useDelay: 0.5
+  usedDelay: 4
+  anim:
+    Frequency: 2
+    direction: {x: 0, y: 0.3, z: 0}
+    torque: {x: 0, y: 0, z: 0}
+    destroyEffectPrefab: {fileID: 4342233203648443275, guid: 836989564b3b264488ca1ea4cd874746, type: 3}
+    targetEffectPrefab: {fileID: 0}
+  popup: {fileID: 155776868120579615}
+  unlocked: 4
+  destroyifLearn: 1
 --- !u!1 &7850279758898318339
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,13 +343,15 @@ GameObject:
   - component: {fileID: 7465602472000556992}
   - component: {fileID: 5590239873760968452}
   - component: {fileID: 4806908097899345899}
+  - component: {fileID: 5822522505974286015}
+  - component: {fileID: 155776868120579615}
   m_Layer: 0
   m_Name: Information
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5740541101238294916
 RectTransform:
   m_ObjectHideFlags: 0
@@ -424,3 +435,34 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &5822522505974286015
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7850279758898318339}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &155776868120579615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7850279758898318339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadffd11273bc97429f54f417f617685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneEntrance: 0
+  fadeTime: 1
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  crossFade: 0
+  updateFrequency: 0.05
+  timeScaleMode: 0
+  feedbackConfig: {fileID: 0}

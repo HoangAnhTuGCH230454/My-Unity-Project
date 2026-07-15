@@ -417,7 +417,7 @@ GameObject:
   - component: {fileID: 3406996001823926417}
   - component: {fileID: 1127388362468327761}
   - component: {fileID: 8923031158016632516}
-  - component: {fileID: 777582825248446699}
+  - component: {fileID: 2743446852543612792}
   m_Layer: 0
   m_Name: unlocking Up Spell
   m_TagString: Untagged
@@ -556,7 +556,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &777582825248446699
+--- !u!114 &2743446852543612792
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -565,11 +565,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 5405887511860348293}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32fc6f43061088e4988c97c0d9f00e33, type: 3}
+  m_Script: {fileID: 11500000, guid: 88c760558b4160a49a40d741d6306672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particle: {fileID: 8246776749872259220, guid: 836989564b3b264488ca1ea4cd874746, type: 3}
-  canvasUI: {fileID: 7096858489318901068}
+  useDelay: 0.5
+  usedDelay: 4
+  anim:
+    Frequency: 2
+    direction: {x: 0, y: 0.3, z: 0}
+    torque: {x: 0, y: 0, z: 0}
+    destroyEffectPrefab: {fileID: 4342233203648443275, guid: 836989564b3b264488ca1ea4cd874746, type: 3}
+    targetEffectPrefab: {fileID: 0}
+  popup: {fileID: 7706220598335812935}
+  unlocked: 8
+  destroyifLearn: 1
 --- !u!1 &6032041828324714447
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,6 +741,8 @@ GameObject:
   - component: {fileID: 7901470213465270870}
   - component: {fileID: 6547106325965942418}
   - component: {fileID: 2437762508109172131}
+  - component: {fileID: 2813257338275918063}
+  - component: {fileID: 7706220598335812935}
   m_Layer: 0
   m_Name: Information
   m_TagString: Untagged
@@ -825,6 +836,37 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &2813257338275918063
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7096858489318901068}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &7706220598335812935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7096858489318901068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadffd11273bc97429f54f417f617685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneEntrance: 0
+  fadeTime: 1
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  crossFade: 0
+  updateFrequency: 0.05
+  timeScaleMode: 0
+  feedbackConfig: {fileID: 0}
 --- !u!1 &8478692492419683787
 GameObject:
   m_ObjectHideFlags: 0

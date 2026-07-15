@@ -259,6 +259,8 @@ GameObject:
   - component: {fileID: 9085649135829226175}
   - component: {fileID: 3137039045865172991}
   - component: {fileID: 8944681439365557041}
+  - component: {fileID: 1137259985996163121}
+  - component: {fileID: 4014267894865582091}
   m_Layer: 0
   m_Name: Information
   m_TagString: Untagged
@@ -352,6 +354,37 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &1137259985996163121
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5857906879245779292}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &4014267894865582091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5857906879245779292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadffd11273bc97429f54f417f617685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneEntrance: 0
+  fadeTime: 1
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  crossFade: 0
+  updateFrequency: 0.05
+  timeScaleMode: 0
+  feedbackConfig: {fileID: 0}
 --- !u!1 &5878008220895008164
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,7 +606,7 @@ GameObject:
   - component: {fileID: 2994846905489556523}
   - component: {fileID: 6611491564679920543}
   - component: {fileID: 6039109989257850759}
-  - component: {fileID: 4252323522731070780}
+  - component: {fileID: 7028188762934474727}
   m_Layer: 0
   m_Name: unlocking Side Spell
   m_TagString: Untagged
@@ -712,7 +745,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &4252323522731070780
+--- !u!114 &7028188762934474727
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -721,11 +754,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 7533548118958204504}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ff6d175431249e4d9df2b89fb26851e, type: 3}
+  m_Script: {fileID: 11500000, guid: 88c760558b4160a49a40d741d6306672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particle: {fileID: 8246776749872259220, guid: 836989564b3b264488ca1ea4cd874746, type: 3}
-  canvasUI: {fileID: 5857906879245779292}
+  useDelay: 0.5
+  usedDelay: 4
+  anim:
+    Frequency: 2
+    direction: {x: 0, y: 0.3, z: 0}
+    torque: {x: 0, y: 0, z: 0}
+    destroyEffectPrefab: {fileID: 4342233203648443275, guid: 836989564b3b264488ca1ea4cd874746, type: 3}
+    targetEffectPrefab: {fileID: 0}
+  popup: {fileID: 4014267894865582091}
+  unlocked: 16
+  destroyifLearn: 1
 --- !u!1 &8246738973620179641
 GameObject:
   m_ObjectHideFlags: 0

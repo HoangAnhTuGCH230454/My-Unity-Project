@@ -14,9 +14,9 @@ public class InventoryManager : MonoBehaviour
         if (PlayerController.Instance == null)
             return;
 
-        heartShards.fillAmount = PlayerController.Instance.heartShards * (1 / PlayerController.Instance.heartShardsPerHealth);
-        manaShards.fillAmount = PlayerController.Instance.manaShards * (1 / PlayerController.Instance.manaShardsPerExcessUnit);
-        if (PlayerController.Instance.unlockingUpSpell)
+        heartShards.fillAmount = (float)PlayerController.Instance.heartShards / PlayerController.Instance.heartShardsPerHealth;
+        manaShards.fillAmount = (float)PlayerController.Instance.manaShards / PlayerController.Instance.manaShardsPerExcessUnit;
+        if (PlayerController.Instance.abilities.HasFlag(PlayerController.Abilities.upCast))
         {
             UpSpell.SetActive(true);
         }
@@ -24,7 +24,7 @@ public class InventoryManager : MonoBehaviour
         {
             UpSpell.SetActive(false);
         }
-        if (PlayerController.Instance.unlockingSideSpell)
+        if (PlayerController.Instance.abilities.HasFlag(PlayerController.Abilities.sideCast))
         {
             SideSpell.SetActive(true);
         }
@@ -32,7 +32,7 @@ public class InventoryManager : MonoBehaviour
         {
             SideSpell.SetActive(false);
         }
-        if (PlayerController.Instance.unlockingDash)
+        if (PlayerController.Instance.abilities.HasFlag(PlayerController.Abilities.dash))
         {
             Dash.SetActive(true);
         }
@@ -40,7 +40,7 @@ public class InventoryManager : MonoBehaviour
         {
             Dash.SetActive(false);
         }
-        if (PlayerController.Instance.unlockingDoubleJump)
+        if (PlayerController.Instance.abilities.HasFlag(PlayerController.Abilities.dbJump))
         {
             DbJump.SetActive(true);
         }
@@ -48,7 +48,7 @@ public class InventoryManager : MonoBehaviour
         {
             DbJump.SetActive(false);
         }
-        if (PlayerController.Instance.unlockingWallJump)
+        if (PlayerController.Instance.abilities.HasFlag(PlayerController.Abilities.wallJump))
         {
             WallJump.SetActive(true);
         }

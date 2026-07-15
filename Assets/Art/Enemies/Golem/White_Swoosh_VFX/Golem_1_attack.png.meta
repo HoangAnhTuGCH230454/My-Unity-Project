@@ -394,12 +394,12 @@ TextureImporter:
       name: Golem_1_attack_14
       rect:
         serializedVersion: 2
-        x: 561
-        y: 0
-        width: 57
-        height: 42
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 567
+        y: 2
+        width: 51
+        height: 40
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -419,8 +419,8 @@ TextureImporter:
         y: 0
         width: 61
         height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

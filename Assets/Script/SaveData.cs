@@ -28,8 +28,8 @@ public struct SaveData
     public Vector2 shadePos;
     public string scenewithShade;
     public Quaternion shadeRotation;
-    public bool playerUnlockedWallJump, playerUnlockedDash, playerUnlockedDoubleJump;
-    public bool playerUnlockedSideSpell, playerUnlockedUpSpell;
+    public PlayerController.Abilities playerAbilities;
+
     public void Instantiate()
     {
         if (!File.Exists(Application.persistentDataPath + "/save.light.dat"))
@@ -85,20 +85,12 @@ public struct SaveData
             writer.Write(playerMana);
             playerManaPenalty = PlayerController.Instance.manaPenalty;
             writer.Write(playerManaPenalty);
-            playerManaPenalty = PlayerController.Instance.manaPenalty;
-            writer.Write(playerManaPenalty);
-            playerManaPenalty = PlayerController.Instance.manaPenalty;
-            writer.Write(playerManaPenalty);
-            playerUnlockedWallJump = PlayerController.Instance.unlockingWallJump;
-            writer.Write(playerUnlockedWallJump);
-            playerUnlockedDash = PlayerController.Instance.unlockingDash;
-            writer.Write(playerUnlockedDash);
-            playerUnlockedDoubleJump = PlayerController.Instance.unlockingDoubleJump;
-            writer.Write(playerUnlockedDoubleJump);
-            playerUnlockedSideSpell = PlayerController.Instance.unlockingSideSpell;
-            writer.Write(playerUnlockedSideSpell);
-            playerUnlockedUpSpell = PlayerController.Instance.unlockingUpSpell;
-            writer.Write(playerUnlockedUpSpell);
+            playerExcessMana = PlayerController.Instance.excessMana;
+            writer.Write(PlayerController.Instance.excessMana);
+            playerManaShards = PlayerController.Instance.manaShards;
+            writer.Write(PlayerController.Instance.manaShards);
+            playerAbilities = PlayerController.Instance.abilities;
+            writer.Write((int)playerAbilities);
 
             playerPosition = PlayerController.Instance.transform.position;
             writer.Write(playerPosition.x);
@@ -118,11 +110,9 @@ public struct SaveData
                 playerHeartShards = reader.ReadInt32();
                 playerMana = reader.ReadSingle();
                 playerManaPenalty = reader.ReadSingle();
-                playerUnlockedWallJump = reader.ReadBoolean();
-                playerUnlockedDash = reader.ReadBoolean();
-                playerUnlockedDoubleJump = reader.ReadBoolean();
-                playerUnlockedSideSpell = reader.ReadBoolean();
-                playerUnlockedUpSpell = reader.ReadBoolean();
+                playerExcessMana = reader.ReadSingle();
+                playerManaShards = reader.ReadInt32();
+                playerAbilities = (PlayerController.Abilities)reader.ReadInt32();
                 playerPosition.x = reader.ReadSingle();
                 playerPosition.y = reader.ReadSingle();
                 lastScene = reader.ReadString();
@@ -134,11 +124,9 @@ public struct SaveData
                 PlayerController.Instance.heartShards = playerHeartShards;
                 PlayerController.Instance.Mana = playerMana;
                 PlayerController.Instance.manaPenalty = playerManaPenalty;
-                PlayerController.Instance.unlockingWallJump = playerUnlockedWallJump;
-                PlayerController.Instance.unlockingDash = playerUnlockedDash;
-                PlayerController.Instance.unlockingDoubleJump = playerUnlockedDoubleJump;
-                PlayerController.Instance.unlockingSideSpell = playerUnlockedSideSpell;
-                PlayerController.Instance.unlockingUpSpell = playerUnlockedUpSpell;
+                PlayerController.Instance.excessMana = playerExcessMana;
+                PlayerController.Instance.manaShards = playerManaShards;
+                PlayerController.Instance.abilities = playerAbilities;
             }
         }
         else
@@ -148,11 +136,9 @@ public struct SaveData
             PlayerController.Instance.Mana = 0.5f;
             PlayerController.Instance.heartShards = 0;
             PlayerController.Instance.manaPenalty = 0;
-            PlayerController.Instance.unlockingWallJump = false;
-            PlayerController.Instance.unlockingDash = false;
-            PlayerController.Instance.unlockingDoubleJump = false;
-            PlayerController.Instance.unlockingSideSpell = false;
-            PlayerController.Instance.unlockingUpSpell = false;
+            PlayerController.Instance.excessMana = 0;
+            PlayerController.Instance.manaShards = 0;
+            PlayerController.Instance.abilities = 0;
         }
     }
     public void SaveShadeData()
@@ -174,7 +160,7 @@ public struct SaveData
     }
     public void LoadShadeData()
     {
-        if (File.Exists(Application.persistentDataPath + "/save.shade.data"))
+        if (File.Exists(Application.persistentDataPath + "/save.shade.dat"))
         {
             using (BinaryReader reader = new BinaryReader(File.OpenRead(Application.persistentDataPath + "/save.shade.dat")))
             {

@@ -26,6 +26,10 @@ public class Enemy : MonoBehaviour
         Flyingorg_Stun,
         Flyingorg_Died,
 
+        Golem_Idle,
+        Golem_Suprise,
+        Golem_Attack,
+
         Shade_Idle,
         Shade_Chase,
         Shade_Stun,

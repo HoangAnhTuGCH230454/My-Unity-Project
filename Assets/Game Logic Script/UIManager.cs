@@ -23,8 +23,8 @@ public class UIManager : UiScreen
         if (Instance && Instance.manaUI)
         {
             Instance.manaUI.Refresh(mana, maxMana, excessMana, excessMaxMana);
+            Instance.manaUI.SetMode(manaPenalty);
         }
-        Instance.manaUI.SetMode(manaPenalty);
     }
 
     protected override void Awake()

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
 using Unity.Mathematics;
-
 public class PlayerController : MonoBehaviour
 {
     [Header("Horizontal Movement Settings")]
@@ -145,12 +144,19 @@ public class PlayerController : MonoBehaviour
     private AudioSource audioSources;
 
     public static PlayerController Instance;
-    public bool unlockingWallJump;
-    public bool unlockingDash;
-    public bool unlockingDoubleJump;
-    public bool unlockingSideSpell;
-    public bool unlockingUpSpell;
     bool openInventory;
+
+    [System.Flags]
+    public enum Abilities : byte
+    {
+        dash = 1,
+        dbJump = 2,
+        wallJump = 4,
+        upCast = 8,
+        sideCast = 16
+    }
+    [Header("Misc")]
+    public Abilities abilities;
 
     private void Awake()
     {
@@ -173,8 +179,6 @@ public class PlayerController : MonoBehaviour
         Mana = mana;
         Health = maxHealth;
         SaveData.saveinstance.LoadPlayerData();
-
-        FindObjectOfType<HeartController>().InstantiateHeartsContainer();
 
         UIManager.UpdateHealthUI(health, maxHealth, excessHealth);
     }
@@ -235,12 +239,12 @@ public class PlayerController : MonoBehaviour
                 Flip();
                 Jump();
             }
-            if (unlockingWallJump)
+            if (abilities.HasFlag(Abilities.wallJump))
             {
                 WallSlide();
                 WallJump();
             }
-            if (unlockingDash)
+            if (abilities.HasFlag(Abilities.dash))
             {
                 StartDash();
             }
@@ -626,7 +630,7 @@ public class PlayerController : MonoBehaviour
         {
             if (excessHealth != value)
             {
-                excessHealth = Mathf.Clamp(value, 0, excessHealth);
+                excessHealth = Mathf.Max(value, 0);
                 UIManager.UpdateHealthUI(health, maxHealth, excessHealth);
             }
         }
@@ -742,7 +746,7 @@ public class PlayerController : MonoBehaviour
     {
         
 
-        if ((yAxis == 0 || (yAxis < 0 && Grounded())) && unlockingSideSpell)
+        if ((yAxis == 0 || (yAxis < 0 && Grounded())) && abilities.HasFlag(Abilities.sideCast))
         {   
             audioSources.PlayOneShot(sideSpellSound);
             anim.SetBool("Casting", true);
@@ -763,7 +767,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        else if (yAxis > 0 && unlockingUpSpell)
+        else if (yAxis > 0 && abilities.HasFlag(Abilities.upCast))
         {
             audioSources.PlayOneShot(upSpellSound);
             Instantiate(UpSpellCast, transform);
@@ -874,7 +878,7 @@ public class PlayerController : MonoBehaviour
             pState.jumping = true;
             jumpBufferCounter = 0;
         }
-        if (!Grounded() && airJumpCounter < maxAirJumps && Input.GetButtonDown("Jump") && unlockingDoubleJump)
+        if (!Grounded() && airJumpCounter < maxAirJumps && Input.GetButtonDown("Jump") && abilities.HasFlag(Abilities.dbJump))
         {
             audioSources.PlayOneShot(jumpSound);
             pState.jumping = true;

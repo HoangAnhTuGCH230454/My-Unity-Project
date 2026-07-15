@@ -146,6 +146,8 @@ GameObject:
   - component: {fileID: 6186650072243458060}
   - component: {fileID: 5663252039528351678}
   - component: {fileID: 569198679262115054}
+  - component: {fileID: 4237316342200764055}
+  - component: {fileID: 2405643696282366811}
   m_Layer: 0
   m_Name: Information
   m_TagString: Untagged
@@ -239,6 +241,37 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &4237316342200764055
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218123498135050150}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &2405643696282366811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218123498135050150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadffd11273bc97429f54f417f617685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneEntrance: 0
+  fadeTime: 1
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  crossFade: 0
+  updateFrequency: 0.05
+  timeScaleMode: 0
+  feedbackConfig: {fileID: 0}
 --- !u!1 &3252114564951409434
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,7 +726,7 @@ GameObject:
   - component: {fileID: 8855567939880081825}
   - component: {fileID: 6439270198930187720}
   - component: {fileID: 4876015333250953497}
-  - component: {fileID: 8132580446928843027}
+  - component: {fileID: 7310654996990124394}
   m_Layer: 0
   m_Name: unlocking Double Jump
   m_TagString: Untagged
@@ -832,7 +865,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &8132580446928843027
+--- !u!114 &7310654996990124394
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -841,11 +874,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 8296612085810752200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dd19d1609c201e41a5ea21264b7eb78, type: 3}
+  m_Script: {fileID: 11500000, guid: 88c760558b4160a49a40d741d6306672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particle: {fileID: 8246776749872259220, guid: 836989564b3b264488ca1ea4cd874746, type: 3}
-  canvasUI: {fileID: 1218123498135050150}
+  useDelay: 0.5
+  usedDelay: 4
+  anim:
+    Frequency: 2
+    direction: {x: 0, y: 0.3, z: 0}
+    torque: {x: 0, y: 0, z: 0}
+    destroyEffectPrefab: {fileID: 4342233203648443275, guid: 836989564b3b264488ca1ea4cd874746, type: 3}
+    targetEffectPrefab: {fileID: 0}
+  popup: {fileID: 2405643696282366811}
+  unlocked: 2
+  destroyifLearn: 1
 --- !u!1 &8945386496599323659
 GameObject:
   m_ObjectHideFlags: 0

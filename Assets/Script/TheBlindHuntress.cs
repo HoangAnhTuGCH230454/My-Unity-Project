@@ -184,7 +184,7 @@ public class TheBlindHuntress : Enemy
             }
             else
             {
-                int _attackChosen = Random.Range(1, 2);
+                int _attackChosen = Random.Range(1, 3);
                 if (_attackChosen == 1)
                 {
                     StartCoroutine(LungeAttack());

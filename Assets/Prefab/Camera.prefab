@@ -47,7 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a477c0f68fca22a4d81f2c643f8abb18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  virtualCameras: []
+  virtualCameras:
+  - {fileID: 7130702321068501456}
   panAmount: 0.1
   panTime: 0.2
   playerFallSpeedTheshold: -10
@@ -123,7 +124,7 @@ Camera:
   far clip plane: 1000
   field of view: 120
   orthographic: 0
-  orthographic size: 123.460464
+  orthographic size: 90
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
