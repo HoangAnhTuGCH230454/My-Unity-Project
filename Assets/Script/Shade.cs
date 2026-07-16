@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Shade : Enemy
 {
@@ -19,7 +20,9 @@ public class Shade : Enemy
         {
             Instance = this;
         }
-        SaveData.saveinstance.SaveShadeData();
+        GameManager.globalData.shadeScene = SceneManager.GetActiveScene().name;
+        GameManager.globalData.shadePosition = transform.position;
+        GameManager.globalData.shadeRotation = transform.rotation;
     }
     protected override void Start()
     {
@@ -103,7 +106,8 @@ public class Shade : Enemy
         {
             anim.SetTrigger("Death");
             PlayerController.Instance.RestoreMana();
-            SaveData.saveinstance.SavePlayerData();
+            GameManager.globalData.shadeScene = "";
+            Terresquall.LightSpot.SaveGameAsync();
             Destroy(gameObject, 0.5f);
         }
     }

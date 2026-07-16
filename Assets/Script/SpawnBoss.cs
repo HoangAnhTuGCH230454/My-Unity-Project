@@ -13,6 +13,16 @@ public class SpawnBoss : MonoBehaviour
 
     private void Awake()
     {
+        if (TheBlindHuntress.instance != null)
+        {
+            Destroy(TheBlindHuntress.instance);
+            callOnce = false;
+            boxCollider.isTrigger = true;
+        }
+        if(GameManager.Is(GameManager.Flags.TBHDefeated))
+        {
+            callOnce = true;
+        }
         if (instance != null && instance != this)
         {
             Destroy(gameObject);

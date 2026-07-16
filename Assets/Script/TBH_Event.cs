@@ -40,5 +40,7 @@ public class TBH_Event : MonoBehaviour
     {
         SpawnBoss.instance.isNotTrigger();
         TheBlindHuntress.instance.DestroyAfterDeath();
+        GameManager.Set(GameManager.Flags.TBHDefeated, true);
+        Terresquall.LightSpot.SaveGameAsync();
     }
 }

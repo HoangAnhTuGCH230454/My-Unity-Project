@@ -27,7 +27,7 @@ public class SceneTransition : MonoBehaviour
     {
         if (_other.CompareTag("Player"))
         {
-            CheckShade();
+            Terresquall.LightSpot.QuickSave();
             GameManager.Instance.Transitionfrom = SceneManager.GetActiveScene().name;
 
             PlayerController.Instance.Set(PlayerController.State.cutscene, true);
@@ -36,17 +36,5 @@ public class SceneTransition : MonoBehaviour
             UIManager.Instance.LoadScene(Transitionto, fadeTime);
         }
         
-    }
-    void CheckShade()
-    {
-        GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
-
-        for (int i = 0; i < enemyObjects.Length; i++)
-        {
-            if (enemyObjects[i].GetComponent<Shade>() != null)
-            {
-                SaveData.saveinstance.SaveShadeData();
-            }
-        }
     }
 }

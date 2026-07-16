@@ -610,7 +610,6 @@ public class PlayerController : PersistentObject
         yield return new WaitForSeconds(1f);
         UIManager.Instance.deathScreen.Activate();
         yield return new WaitForSeconds(1f);
-        Instantiate(GameManager.Instance.Shade, transform.position, Quaternion.identity);
         Terresquall.LightSpot.SaveGame();
     }
     public void Respawn(float manaPenalty = 0.5f)

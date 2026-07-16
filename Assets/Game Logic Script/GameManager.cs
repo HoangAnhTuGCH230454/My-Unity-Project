@@ -1,32 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Terresquall;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 [DisallowMultipleComponent]
-public class GameManager : MonoBehaviour
+public class GameManager : PersistentObject
 {
     public string Transitionfrom;
 
     public Vector2 PlatformrespawnPoint;
     public Vector2 respawnAfterDeath;
     public Vector2 defaultRespawnpoint;
-    [SerializeField] LightSpot lightSpot;
 
-    public GameObject Shade;
+    public Shade shadePrefab;
+    Shade currentShade;
+    
     [SerializeField] private UiScreen pauseMenu;
     [SerializeField] private float fadeTime;
     public bool isPaused;
     float lasttimeScale = -1f;
-    public bool TBHDefeated = false;
+    public static SaveData globalData = new SaveData();
     static Coroutine stopGameCorountine;
 
     public static bool isStopped { get { return stopGameCorountine != null; } }
     public static GameManager Instance { get; private set; }
     private void Awake()
     {
-        SaveData.saveinstance.Instantiate();
+        if (PlayerController.Instance != null)
+        {
+            if (globalData.shadeScene == SceneManager.GetActiveScene().name)
+            {
+                SpawnShade(globalData.shadePosition, globalData.shadeRotation);
+            }
+        }
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -36,6 +45,33 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+        DontDestroyOnLoad(gameObject);
+        SaveScene();
+    }
+
+    async void Start()
+    {
+        await Task.Delay(100);
+        Terresquall.LightSpot.QuickLoad();
+
+        SaveData.saveinstance.LoadPickupData();
+        if (PlayerController.Instance != null)
+        {
+            if (globalData.shadeScene == SceneManager.GetActiveScene().name)
+            {
+                SpawnShade(globalData.shadePosition, globalData.shadeRotation);
+            }
+        }
+    }
+
+    public static Shade SpawnShade(Vector3 position, Quaternion rotation)
+    {
+        if (Instance.currentShade)
+        {
+            return null;
+        }
+        Instance.currentShade = Instantiate(Instance.shadePrefab, position, rotation);
+        return Instance.currentShade;
     }
     private void Update()
     {
@@ -43,6 +79,13 @@ public class GameManager : MonoBehaviour
         {
             Pause(!isPaused);
         }
+    }
+
+    protected override void Reset()
+    {
+        saveID = "GameManager";
+        defaultRespawnpoint = FindObjectOfType<PlayerController>().transform.position;
+        pauseMenu = FindObjectOfType<UiScreen>();
     }
     public void Pause(bool pausing)
     {
@@ -129,27 +172,22 @@ public class GameManager : MonoBehaviour
             Time.timeScale = Mathf.Max(0, timeScaleToRestore);
         }
     }
-    public void SaveGame()
-    {
-        SaveData.saveinstance.SavePlayerData();
-    }
 
     public void SaveScene()
     {
         string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        SaveData.saveinstance.sceneNames.Add(currentSceneName);
     }
 
     public void respawnPlayer(float manaPenalty = 0f)
     {
-        SaveData.saveinstance.LoadLightSpot();
-        if (SaveData.saveinstance.spotSceneName != null)
+        if (!string.IsNullOrEmpty(globalData.lastScene) && globalData.lastScene != SceneManager.GetActiveScene().name)
         {
-            SceneManager.LoadScene(SaveData.saveinstance.spotSceneName);
-        }
-        if (Mathf.Approximately(SaveData.saveinstance.lightPos.sqrMagnitude, 0))
-        {
-            respawnAfterDeath = SaveData.saveinstance.lightPos;
+            SceneManager.LoadScene(globalData.lastScene);
+            SavePoint sp = LightSpot.FindObjectBySaveID(globalData.lastScene) as SavePoint;
+            if (sp)
+            {
+                respawnAfterDeath = sp.getAnchorPos();
+            }
         }
         else
         {
@@ -189,5 +227,84 @@ public class GameManager : MonoBehaviour
         SaveScene();
         DontDestroyOnLoad(gameObject);
         lightSpot = FindObjectOfType<LightSpot>();
+    }
+
+    public override PersistentObject.SaveData Save()
+    {
+        if (CanSave())
+        {
+            globalData.saveID() = saveID;
+            return globalData;
+        }
+
+        Debug.Log("Failed to save the game");
+        return null;
+    }
+
+    public override bool Load(PersistentObject.SaveData data)
+    {
+        if (data == null)
+        {
+            return false;
+        }
+        globalData = data as SaveData;
+        if (globalData == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    [System.Flags]
+    public enum Flags : long { None = 0, TBHDefeated = 1}
+    public static bool Is(Flags f)
+    {
+        return globalData.flags.HasFlag(f);
+    }
+    public static void Set(Flags f, bool on)
+    {
+        if (on)
+        {
+            globalData.flags |= f;
+        }
+        else
+        {
+            globalData.flags &= f;
+        }
+    }
+
+    [System.Serializable]
+    public new class SaveData : PersistentObject.SaveData
+    {
+        public string lastScene;
+        public string lightSpotSaveID;
+
+        public string shadeScene;
+        public float shadePositionX, shadePositionY, shadePositionZ;
+        public float shadeRotationX, shadeRotationY, shadeRotationZ, shadeRotationW;
+        public Flags flags;
+
+        public Vector3 shadePosition
+        {
+            get { return new Vector3(shadePositionX, shadePositionY, shadePositionZ); }
+            set
+            {
+                shadePositionX = value.x;
+                shadePositionY = value.y;
+                shadePositionZ = value.z;
+            }
+        }
+        
+        public Quaternion shadeRotation
+        {
+            get { return new Quaternion(shadeRotationX, shadeRotationY, shadeRotationZ, shadeRotationW); }
+            set
+            {
+                shadeRotationX = value.x;
+                shadeRotationY = value.y;
+                shadeRotationZ = value.z;
+                shadeRotationW = value.w;
+            }
+        }
     }
 }
