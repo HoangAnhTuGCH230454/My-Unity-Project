@@ -20,7 +20,7 @@ public class SceneTransition : MonoBehaviour
 
             StartCoroutine(PlayerController.Instance.WalktoScene(Exit, Endtime));
         }
-        StartCoroutine(UiScreen.FadeTo(fadeColor, 1, fadeTime));
+        StartCoroutine(UiScreen.FadeTo(fadeColor, -1, fadeTime));
     }
 
     private void OnTriggerEnter2D(Collider2D _other)
@@ -29,10 +29,13 @@ public class SceneTransition : MonoBehaviour
         {
             CheckShade();
             GameManager.Instance.Transitionfrom = SceneManager.GetActiveScene().name;
-            PlayerController.Instance.pState.cutscene = true;
-            SceneManager.LoadScene(Transitionto);
+
+            PlayerController.Instance.Set(PlayerController.State.cutscene, true);
+            PlayerController.Instance.Set(PlayerController.State.invincible, true);
+            
+            UIManager.Instance.LoadScene(Transitionto, fadeTime);
         }
-        UIManager.Instance.LoadScene(Transitionto, fadeTime);
+        
     }
     void CheckShade()
     {

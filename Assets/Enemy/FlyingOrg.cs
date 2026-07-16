@@ -15,7 +15,7 @@ public class FlyingOrg : Enemy
     protected override void Update()
     {
         base.Update();
-        if (!PlayerController.Instance.pState.alive)
+        if (!PlayerController.Instance.Is(PlayerController.State.alive))
         {
             ChangeState(EnemyStates.Flyingorg_Idle);
         }

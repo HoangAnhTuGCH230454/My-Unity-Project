@@ -102,12 +102,12 @@ public class Enemy : MonoBehaviour
     }
     protected virtual void OnCollisionStay2D(Collision2D _other)
     {
-        if (_other.gameObject.CompareTag("Player") && !PlayerController.Instance.pState.invincible && health > 0)
+        if (_other.gameObject.CompareTag("Player") && !PlayerController.Instance.Is(PlayerController.State.invincible) && health > 0)
         {
             Attack();
-            if (PlayerController.Instance.pState.alive)
+            if (PlayerController.Instance.Is(PlayerController.State.alive))
             {
-                GameManager.Stop();
+                GameManager.Stop(.5f, .5f, 0.01f);
             }
         }
     }

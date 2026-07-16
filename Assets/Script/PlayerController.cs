@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEngine.UI;
-using Unity.Mathematics;
-public class PlayerController : MonoBehaviour
+using UnityEngine.SceneManagement;
+using Terresquall;
+public class PlayerController : PersistentObject
 {
     [Header("Horizontal Movement Settings")]
     [SerializeField] private float walkSpeed = 1;
@@ -158,6 +157,33 @@ public class PlayerController : MonoBehaviour
     [Header("Misc")]
     public Abilities abilities;
 
+    [System.Flags]
+    public enum State
+    {
+        jumping = 1, dashing = 2, recoilingX = 4, recoilingY = 8,
+        lookingRight = 16, invincible = 32, healing = 64, casting = 128,
+        cutscene = 256, alive = 512
+    }
+
+    public State state;
+    public bool Is(State s) {  return state.HasFlag(s); }
+    public void Set(State s, bool on)
+    {
+        if (on)
+        {
+            state |= s;
+        }
+        else
+        {
+            state &= ~s;
+        }
+    }
+    public bool Toggle(State s)
+    {
+        state ^= s;
+        return Is(s);
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -169,7 +195,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        pState = GetComponent<PlayerStateList>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         audioSources = GetComponent<AudioSource>();
@@ -178,7 +203,10 @@ public class PlayerController : MonoBehaviour
         pState.dashing = false;
         Mana = mana;
         Health = maxHealth;
-        SaveData.saveinstance.LoadPlayerData();
+        if (health > 0)
+        {
+            Set(State.alive, true);
+        }
 
         UIManager.UpdateHealthUI(health, maxHealth, excessHealth);
     }
@@ -207,31 +235,34 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (pState.cutscene || GameManager.Instance.isPaused) return;
+        if (Is(State.cutscene) || GameManager.Instance.isPaused) return;
 
-        if (pState.alive)
+        if (Is(State.alive))
         {
             HandleRestoreManaWithExcess();
             GetInputs();
             ToggleInventory();
+            UpdateJumpVariables();
+            UpdateCameraYDampingforPlayerFall();
+            FlashWhileInvincible();
         }
-        
-        UpdateJumpVariables();
-        UpdateCameraYDampingforPlayerFall();
+        else
+        {
+            return;
+        }
 
-        if (pState.dashing) return;
+        if (Is(State.dashing)) return;
 
-        FlashWhileInvincible();
 
-        if (pState.alive)
+        if (Is(State.alive))
         {
             Heal();
             CastSpell();
         }
         
 
-        if (pState.healing) return;
-        if (pState.alive)
+        if (Is(State.healing)) return;
+        if (Is(State.alive))
         {
             if (!isWallJumping)
             {
@@ -255,7 +286,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D _other)
     {
-        if (_other.GetComponent<Enemy>() != null && pState.casting)
+        if (_other.GetComponent<Enemy>() != null && Is(State.casting))
         {
             _other.GetComponent<Enemy>().EnemyHit(spellDamage, (_other.transform.position - transform.position).normalized, -recoilYSpeed);
         }
@@ -264,8 +295,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (pState.cutscene) return;
-        if (pState.dashing) return;
+        if (Is(State.cutscene)) return;
+        if (Is(State.dashing)) return;
         Recoil();
     }
 
@@ -306,7 +337,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (pState.healing) rb.velocity = new Vector2(0, 0);
+        if (Is(State.healing)) rb.velocity = new Vector2(0, 0);
         rb.velocity = new Vector2(walkSpeed * xAxis, rb.velocity.y);
         if (xAxis != 0) Flip();
 
@@ -365,7 +396,7 @@ public class PlayerController : MonoBehaviour
         anim.SetTrigger("Dashing");
         audioSources.PlayOneShot(dashSound);
         rb.gravityScale = 0;
-        int dir_ = pState.lookingRight ? 1 : -1;
+        int dir_ = Is(State.lookingRight) ? 1 : -1;
         rb.velocity = new Vector2(dashSpeed * dir_, 0);
         yield return new WaitForSeconds(dashTime);
         rb.gravityScale = gravity;
@@ -408,7 +439,7 @@ public class PlayerController : MonoBehaviour
 
             if (yAxis == 0 || (yAxis < 0 && Grounded()))
             {
-                int recoilLeftorRight = pState.lookingRight ? 1 : -1;
+                int recoilLeftorRight = Is(State.lookingRight) ? 1 : -1;
                 Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, Vector2.right * recoilLeftorRight, recoilXSpeed);
                 Instantiate(currentSlash, SideAttackTransform);
             }
@@ -459,14 +490,14 @@ public class PlayerController : MonoBehaviour
 
     void Recoil()
     {
-        if (pState.recoilingX)
+        if (Is(State.recoilingX))
         {
-            if (pState.lookingRight)
+            if (Is(State.lookingRight))
                 rb.velocity = new Vector2(-recoilXSpeed, 0);
             else
                 rb.velocity = new Vector2(recoilXSpeed, 0);
         }
-        if (pState.recoilingY)
+        if (Is(State.recoilingY))
         {
             rb.gravityScale = 0;
             if (yAxis < 0)
@@ -483,7 +514,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.gravityScale = gravity;
         }
-        if (pState.recoilingX && stepXRecoiled < recoilXStep)
+        if (Is(State.recoilingX) && stepXRecoiled < recoilXStep)
         {
             stepXRecoiled++;
         }
@@ -492,7 +523,7 @@ public class PlayerController : MonoBehaviour
             StopRecoilX();
         }
 
-        if (pState.recoilingY && stepYRecoiled < recoilYStep)
+        if (Is(State.recoilingY) && stepYRecoiled < recoilYStep)
         {
             stepYRecoiled++;
         }
@@ -520,7 +551,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float _damage)
     {
-        if (pState.alive)
+        if (Is(State.alive))
         {
             audioSources.PlayOneShot(hurtSound);
 
@@ -563,7 +594,7 @@ public class PlayerController : MonoBehaviour
 
     void FlashWhileInvincible()
     {
-        sr.color = pState.invincible ? Color.Lerp(Color.white, Color.black, Mathf.PingPong(Time.time * hitFlashSpeed, 1.0f)) : Color.white;
+        sr.color = Is(State.invincible) ? Color.Lerp(Color.white, Color.black, Mathf.PingPong(Time.time * hitFlashSpeed, 1.0f)) : Color.white;
     }
 
     IEnumerator Death()
@@ -580,10 +611,11 @@ public class PlayerController : MonoBehaviour
         UIManager.Instance.deathScreen.Activate();
         yield return new WaitForSeconds(1f);
         Instantiate(GameManager.Instance.Shade, transform.position, Quaternion.identity);
+        Terresquall.LightSpot.SaveGame();
     }
     public void Respawn(float manaPenalty = 0.5f)
     {
-        if (!pState.alive)
+        if (!Is(State.alive))
         {
             if (rb)
             {
@@ -651,7 +683,7 @@ public class PlayerController : MonoBehaviour
 
     void Heal()
     {
-        if (Input.GetButton("Cast/Heal") && castorhealTimer > 0.05 && Health < maxHealth && Mana > 0 && Grounded() && !pState.dashing)
+        if (Input.GetButton("Cast/Heal") && castorhealTimer > 0.05 && Health < maxHealth && Mana > 0 && Grounded() && !Is(State.dashing))
         {
             pState.healing = true;
             rb.velocity = Vector2.zero;
@@ -753,7 +785,7 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(0.15f);
             GameObject _fireBall = Instantiate(SideSpellCast, SideAttackTransform.position, Quaternion.identity);
             
-            if (pState.lookingRight)
+            if (Is(State.lookingRight))
             {
                 _fireBall.transform.eulerAngles = Vector3.zero;
             }
@@ -845,17 +877,18 @@ public class PlayerController : MonoBehaviour
         if (isSliding)
         {
             isWallJumping = false;
-            wallJumpingDirection = !pState.lookingRight ? 1 : -1;
+            wallJumpingDirection = !Is(State.lookingRight) ? 1 : -1;
             CancelInvoke(nameof(StopWallJump));
         }
         if (Input.GetButtonDown("Jump") && isSliding)
         {
+            audioSources.PlayOneShot(jumpSound);
             isWallJumping = true;
             rb.velocity = new Vector2(wallJumpingPower.x * wallJumpingDirection, wallJumpingPower.y);
             dashed = false;
             airJumpCounter = 0;
-            pState.lookingRight = !pState.lookingRight;
-            transform.eulerAngles = new Vector2(transform.eulerAngles.x, 180);
+            float jumpDirection = Toggle(State.lookingRight) ? 0 : 180;
+            transform.eulerAngles = new Vector2(transform.eulerAngles.x, jumpDirection);
             Invoke(nameof(StopWallJump), wallJumpingDuration);
         }
     }
@@ -864,10 +897,93 @@ public class PlayerController : MonoBehaviour
         isWallJumping = false;
         transform.eulerAngles = new Vector2(transform.eulerAngles.x, 0);
     }
+
+    public override PersistentObject.SaveData Save() 
+    {
+        SaveData playerData = new SaveData();
+        if (CanSave())
+        {
+            return new SaveData
+            {
+                saveID = saveID,
+                Health = Health,
+                maxHealth = maxHealth,
+                maxTotalHealth = maxTotalHealth,
+                heartShards = heartShards,
+
+                Mana = Mana,
+                manaPenalty = manaPenalty,
+                manaOrbs = excessMaxManaUnits,
+                orbShards = manaShards,
+
+                unlocks = (byte)abilities,
+
+                position = transform.position,
+
+                lastScene = SceneManager.GetActiveScene().name,
+            };
+        }
+        return null;
+    }
+
+    public override bool Load(PersistentObject.SaveData data)
+    {
+        if (data == null)
+        {
+            return false;
+        }
+        SaveData playerData = data as SaveData;
+        if (playerData == null)
+        {
+            return false;
+        }
+
+        Health = playerData.Health;
+        maxHealth = playerData.maxTotalHealth;
+        heartShards = playerData.heartShards;
+
+        manaPenalty = playerData.manaPenalty;
+        excessMaxManaUnits = playerData.manaOrbs;
+        manaShards = playerData.orbShards;
+        Mana = playerData.Mana;
+
+        abilities = (Abilities)playerData.unlocks;
+
+        transform.position = playerData.position;
+        return true;
+    }
+
+    [System.Serializable]
+    public new class SaveData : PersistentObject.SaveData
+    {
+        public float positionX, positionY, positionZ;
+        public float manaPenalty;
+        public int Health;
+        public int maxHealth;
+        public int maxTotalHealth;
+        public int heartShards;
+        public float Mana;
+        public int manaOrbs;
+        public int orbShards;
+        public byte unlocks;
+        public string lastScene;
+
+        public Vector3 position
+        {
+            get { return new Vector3(positionX, positionY, positionZ); }
+            set
+            {
+                positionX = value.x;
+                positionY = value.y;
+                positionZ = value.z;
+            }
+        }
+    }
+
     void Jump()
     {
 
-        if (jumpBufferCounter > 0 && coyoteTimeCounter > 0 && !pState.jumping)
+        if (jumpBufferCounter > 0 && coyoteTimeCounter > 0 && !Is(State.jumping))
         {
             if (Input.GetButtonDown("Jump"))
             {

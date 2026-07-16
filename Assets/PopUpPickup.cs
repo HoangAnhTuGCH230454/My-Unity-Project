@@ -32,7 +32,7 @@ public abstract class PopUpPickup : PickUp
         base.Used(p);
     }
 
-    void Reset()
+    protected override void Reset()
     {
         useDelay = 0.5f;
         usedDelay = 4f;

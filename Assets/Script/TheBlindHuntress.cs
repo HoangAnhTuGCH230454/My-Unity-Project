@@ -289,6 +289,7 @@ public class TheBlindHuntress : Enemy
                     StartCoroutine(Stunned());
                 }
             }
+            ResetAllAttack();
         }
         else
         {

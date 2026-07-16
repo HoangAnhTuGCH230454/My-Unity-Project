@@ -75,7 +75,6 @@ GameObject:
   - component: {fileID: 277188575641616446}
   - component: {fileID: 3505406758049085626}
   - component: {fileID: 8932202104877406861}
-  - component: {fileID: 5667955470253469503}
   - component: {fileID: 3352853944724085170}
   - component: {fileID: 27379773968090609}
   - component: {fileID: 2827525503159208550}
@@ -285,16 +284,26 @@ MonoBehaviour:
   health: 5
   maxHealth: 5
   maxTotalHealth: 10
+  excessHealth: 0
   heartShards: 0
+  heartShardsPerHealth: 4
   bloodSplit: {fileID: 7427804675961602607, guid: ae71833f56c34a44ea5228517f541580, type: 3}
   hitFlashSpeed: 1.5
   HealingVFX: {fileID: 6537098279089390218, guid: 5fee457f0a60514489ac709f16b57456, type: 3}
   timetoHeal: 1
-  manaStorage: {fileID: 0}
   mana: 1
-  manaDrainSpeed: 0.2
-  manaGain: 0.3
-  respawnMana: 0
+  maxMana: 3
+  manaPenalty: 0
+  excessMana: 0
+  excessMaxManaUnits: 0
+  excessMaxManaUnitsLimit: 3
+  manaPerExcessUnit: 1
+  excessManaRestoreDelay: 3
+  excessManaRestoreRate: 1
+  manaShards: 0
+  manaShardsPerExcessUnit: 4
+  attackManaGain: 0.34
+  healManaCostPerSec: 1
   manaSpellCost: 0.3
   timeBetweenCast: 1
   spellDamage: 20
@@ -314,33 +323,8 @@ MonoBehaviour:
   pState: {fileID: 0}
   rb: {fileID: 0}
   dust: {fileID: 0}
-  unlockingWallJump: 0
-  unlockingDash: 0
-  unlockingDoubleJump: 0
-  unlockingSideSpell: 0
-  unlockingUpSpell: 0
---- !u!114 &5667955470253469503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4317178454639734920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c97f4d1529a80af4d84f73b0d8640c4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumping: 0
-  dashing: 0
-  recoilingX: 0
-  recoilingY: 0
-  lookingRight: 0
-  invincible: 0
-  healing: 0
-  casting: 0
-  cutscene: 0
-  alive: 1
+  abilities: 0
+  state: 528
 --- !u!114 &3352853944724085170
 MonoBehaviour:
   m_ObjectHideFlags: 0

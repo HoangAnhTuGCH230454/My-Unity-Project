@@ -20,6 +20,16 @@ public class Golem : Enemy
         rb.gravityScale = 12f;
     }
 
+    protected override void Update()
+    {
+        base.Update();
+
+        if (!PlayerController.Instance.Is(PlayerController.State.alive))
+        {
+            ChangeState(EnemyStates.Golem_Idle);
+        }
+    }
+
     protected override void UpdateEnemyStates()
     {
         if (health <= 0)

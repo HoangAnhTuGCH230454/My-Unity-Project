@@ -16,8 +16,8 @@ public class Spikes : MonoBehaviour
 
     IEnumerator RespawnPoint()
     {
-        PlayerController.Instance.pState.cutscene = true;
-        PlayerController.Instance.pState.invincible = true;
+        PlayerController.Instance.Set(PlayerController.State.cutscene, true);
+        PlayerController.Instance.Set(PlayerController.State.invincible, true);
         PlayerController.Instance.rb.velocity = Vector2.zero;
         Time.timeScale = 0;
         StartCoroutine(UiScreen.FadeTo(hitFadeColor, 1, hitFadeTime));
@@ -26,8 +26,8 @@ public class Spikes : MonoBehaviour
         PlayerController.Instance.transform.position = GameManager.Instance.PlatformrespawnPoint;
         StartCoroutine(UiScreen.FadeTo(hitFadeColor, -1, hitFadeTime));
         yield return new WaitForSecondsRealtime(hitFadeTime);
-        PlayerController.Instance.pState.cutscene = false;
-        PlayerController.Instance.pState.invincible = false;
+        PlayerController.Instance.Set(PlayerController.State.cutscene, false);
+        PlayerController.Instance.Set(PlayerController.State.invincible, false);
         Time.timeScale = 1;
     }
 }

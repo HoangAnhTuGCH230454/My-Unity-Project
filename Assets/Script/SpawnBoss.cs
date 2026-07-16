@@ -48,6 +48,7 @@ public class SpawnBoss : MonoBehaviour
     IEnumerator WalkintoRoom()
     {
         StartCoroutine(PlayerController.Instance.WalktoScene(exitDir, 1));
+        PlayerController.Instance.Set(PlayerController.State.cutscene, true);
         yield return new WaitForSeconds(1f);
         boxCollider.isTrigger = false;
         Instantiate(boss, spawnPoint.position, Quaternion.identity);

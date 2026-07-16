@@ -18,6 +18,15 @@ public class Mushroom : Enemy
         anim = GetComponent<Animator>();
     }
 
+    protected override void Update()
+    {
+        base.Update();
+        if (!PlayerController.Instance.Is(PlayerController.State.alive))
+        {
+            ChangeState(EnemyStates.Mushroom_Idle);
+        }
+    }
+
     protected override void UpdateEnemyStates()
     {
         if (health <= 0)

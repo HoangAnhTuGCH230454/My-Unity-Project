@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using Terresquall;
 
-public abstract class PickUp : MonoBehaviour
+public abstract class PickUp : PersistentObject
 {
     protected bool used;
 
@@ -79,7 +80,7 @@ public abstract class PickUp : MonoBehaviour
 
     public virtual void Used(PlayerController p)
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     protected virtual IEnumerator HandleUse(PlayerController p)
@@ -104,5 +105,31 @@ public abstract class PickUp : MonoBehaviour
                 duration -= r.waitTime;
             }
         }
+    }
+
+    [System.Serializable]
+    public new class SaveData : PersistentObject.SaveData
+    {
+        public bool used;
+    }
+
+    public override PersistentObject.SaveData Save()
+    {
+        if (CanSave() && used)
+        {
+            return new SaveData { used = used };
+        }
+        return null;
+    }
+
+    public override bool Load(PersistentObject.SaveData data)
+    {
+        SaveData s = (SaveData)data;
+        if (s != null && s.used)
+        {
+            Destroy(gameObject);
+            return true;
+        }
+        return false;
     }
 }
