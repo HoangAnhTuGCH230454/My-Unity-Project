@@ -10,7 +10,7 @@ namespace Terresquall {
         public override void OnInspectorGUI() {
 
             if (!saveSlots.settings) {
-                EditorGUILayout.HelpBox("Your Bench Settings scriptable object is not assigned to this component. Please click the button below to create and assign the settings file.", MessageType.Error);
+                EditorGUILayout.HelpBox("Your LightSpot Settings scriptable object is not assigned to this component. Please click the button below to create and assign the settings file.", MessageType.Error);
                 if (GUILayout.Button("BUTTON NOT CODED YET")) {
 
                 }

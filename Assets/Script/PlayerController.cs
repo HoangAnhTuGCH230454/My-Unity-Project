@@ -200,7 +200,7 @@ public class PlayerController : PersistentObject
         audioSources = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
         gravity = rb.gravityScale;
-        pState.dashing = false;
+        Set(State.dashing, false);
         Mana = mana;
         Health = maxHealth;
         if (health > 0)
@@ -382,7 +382,7 @@ public class PlayerController : PersistentObject
         else if (xAxis < 0)
         {
             transform.localScale = new Vector2(-Mathf.Abs(transform.localScale.x), transform.localScale.y);
-            pState.lookingRight = false;
+            Set(State.lookingRight, false);
             if (Grounded())
             {
                 dust.Play();
@@ -400,7 +400,7 @@ public class PlayerController : PersistentObject
         rb.velocity = new Vector2(dashSpeed * dir_, 0);
         yield return new WaitForSeconds(dashTime);
         rb.gravityScale = gravity;
-        pState.dashing = false;
+        Set(State.dashing, false);
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
@@ -419,7 +419,7 @@ public class PlayerController : PersistentObject
         }
         Flip();
         yield return new WaitForSeconds(_delay);
-        pState.cutscene = false;
+        Set(State.cutscene, false);
     }
     void Attack()
     {
@@ -540,13 +540,13 @@ public class PlayerController : PersistentObject
     void StopRecoilX()
     {
         stepXRecoiled = 0;
-        pState.recoilingX = false;
+        Set(State.recoilingX, false);
     }
 
     void StopRecoilY()
     {
         stepYRecoiled = 0;
-        pState.recoilingY = false;
+        Set(State.recoilingY, false);
     }
 
     public void TakeDamage(float _damage)
@@ -589,7 +589,7 @@ public class PlayerController : PersistentObject
         GameObject _bloodSplitParticle = Instantiate(bloodSplit, transform.position, Quaternion.identity);
         Destroy(_bloodSplitParticle, 1f);
         yield return new WaitForSeconds(1f);
-        pState.invincible = false;
+        Set(State.invincible, false);
     }
 
     void FlashWhileInvincible()
@@ -599,7 +599,7 @@ public class PlayerController : PersistentObject
 
     IEnumerator Death()
     {
-        pState.alive = false;
+        Set(State.alive, false);
         Time.timeScale = 1f;
         GameObject _bloodSplitParticle = Instantiate(bloodSplit, transform.position, Quaternion.identity);
         Destroy(_bloodSplitParticle, 1f);
@@ -702,7 +702,7 @@ public class PlayerController : PersistentObject
         }
         else
         {
-            pState.healing = false;
+            Set(State.healing, false);
             healTimer = 0;
             if (activeHealingVFX != null)
             {
@@ -816,7 +816,7 @@ public class PlayerController : PersistentObject
             }
         }
         anim.SetBool("Casting", false);
-        pState.casting = false;
+        Set(State.casting, false);
     }
 
     public bool Grounded()
@@ -838,7 +838,7 @@ public class PlayerController : PersistentObject
                 audioSources.PlayOneShot(landingSound);
                 landingSoundisPlayed = true;
             }
-            pState.jumping = false;
+            Set(State.jumping, false);
             coyoteTimeCounter = coyoteTime;
             airJumpCounter = 0;
         }
@@ -1005,7 +1005,7 @@ public class PlayerController : PersistentObject
         {
             dust.Play();
             rb.velocity = new Vector2(rb.velocity.x, 0);
-            pState.jumping = false;
+            Set(State.jumping, false);
         }
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -maxFallSpeed, rb.velocity.y));
 

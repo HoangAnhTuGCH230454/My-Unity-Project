@@ -1780,6 +1780,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 4896704424252469585, guid: 2029c44e5a534f945a415fafd79b1339, type: 3}
+      propertyPath: m_text
+      value: " Forest_1\n\n 18 Sep 2025\n 0h 00m 19s\nVersion 1.0\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896704424252469585, guid: 2029c44e5a534f945a415fafd79b1339, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

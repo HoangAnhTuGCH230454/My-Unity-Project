@@ -549,7 +549,7 @@ MonoBehaviour:
   slotNumberUI: {fileID: 4896704424123779860}
   metadataUI: {fileID: 4896704424252469585}
   deleteButtonUI: {fileID: 4896704424490708444}
-  defaultScene: Cave_1
+  defaultScene: Forest_1
   disableIfEmpty: 0
   displayFormat: '{0} {1}'
   dateFormat: d MMM yyyy
