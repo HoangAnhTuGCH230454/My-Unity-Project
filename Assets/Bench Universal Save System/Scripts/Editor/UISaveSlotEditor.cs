@@ -70,7 +70,6 @@ namespace Terresquall {
 
             serializedObject.ApplyModifiedProperties();
 
-            // Update save slots button.
             if (m && m.settings) {
                 if (GUILayout.Button("Update Save Slots")) {
                     m.UpdateSaveSlots();

@@ -52,9 +52,8 @@ public class GameManager : PersistentObject
     async void Start()
     {
         await Task.Delay(100);
-        Terresquall.LightSpot.QuickLoad();
+        LightSpot.QuickLoad();
 
-        SaveData.saveinstance.LoadPickupData();
         if (PlayerController.Instance != null)
         {
             if (globalData.shadeScene == SceneManager.GetActiveScene().name)
@@ -175,7 +174,7 @@ public class GameManager : PersistentObject
 
     public void SaveScene()
     {
-        string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        string currentSceneName = SceneManager.GetActiveScene().name;
     }
 
     public void respawnPlayer(float manaPenalty = 0f)
@@ -213,10 +212,9 @@ public class GameManager : PersistentObject
         {
             if (PlayerController.Instance.manaPenalty > 0f)
             {
-                SaveData.saveinstance.LoadShadeData();
-                if (SaveData.saveinstance.scenewithShade == UnityEngine.SceneManagement.SceneManager.GetActiveScene().name || SaveData.saveinstance.scenewithShade == "")
+                if (globalData.shadeScene == SceneManager.GetActiveScene().name || globalData.shadeScene == "")
                 {
-                    Instantiate(Shade, SaveData.saveinstance.shadePos, SaveData.saveinstance.shadeRotation);
+                    Instantiate(shadePrefab, globalData.shadePosition, globalData.shadeRotation);
                 }
             }
         }
@@ -226,14 +224,13 @@ public class GameManager : PersistentObject
         }
         SaveScene();
         DontDestroyOnLoad(gameObject);
-        lightSpot = FindObjectOfType<LightSpot>();
     }
 
     public override PersistentObject.SaveData Save()
     {
         if (CanSave())
         {
-            globalData.saveID() = saveID;
+            globalData.saveID = saveID;
             return globalData;
         }
 
@@ -269,7 +266,7 @@ public class GameManager : PersistentObject
         }
         else
         {
-            globalData.flags &= f;
+            globalData.flags &= ~f;
         }
     }
 

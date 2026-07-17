@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AddManaOrbs : MonoBehaviour
@@ -42,7 +41,7 @@ public class AddManaOrbs : MonoBehaviour
         StartCoroutine(orbShards.LerpFill());
         yield return new WaitForSeconds(2.5f);
         PlayerController.Instance.ConvertManaShards();
-        SaveData.saveinstance.SavePlayerData();
+
         CanvasUI.SetActive(false);
         Destroy(gameObject);
     }

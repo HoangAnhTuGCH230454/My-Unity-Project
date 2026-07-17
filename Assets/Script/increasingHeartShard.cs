@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class increasingHeartShard : MonoBehaviour
@@ -40,7 +39,7 @@ public class increasingHeartShard : MonoBehaviour
 
         yield return new WaitForSeconds(2.5f);
         PlayerController.Instance.ConvertHeartShards();
-        SaveData.saveinstance.SavePlayerData();
+
         canvasUI.SetActive(false);
         Destroy(gameObject);
     }
