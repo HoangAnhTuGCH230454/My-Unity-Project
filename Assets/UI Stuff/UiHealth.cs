@@ -63,7 +63,7 @@ public class UiHealth : UiScreen
             }
         }
 
-        while (excessHealthUnit.Count > excessItemCount)
+        while (excessHealthUnit.Count < excessItemCount)
         {
             excessHealthUnit.Add(Instantiate(excessHealthUnitPrefab, transform));
         }

@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(CanvasGroup))]
@@ -94,7 +92,7 @@ public class UiScreen : MonoBehaviour
         UiScreen[] all = FindObjectsOfType<UiScreen>();
         foreach (UiScreen screen in all)
         {
-            if(screen == this)
+            if (screen == this)
             {
                 continue;
             }
@@ -276,13 +274,17 @@ public class UiScreen : MonoBehaviour
         {
             fadeDuration = fadeTime;
         }
-        yield return FadeTo(fadeColor, 1,fadeDuration, 0);
+        yield return FadeTo(fadeColor, 1, fadeDuration, 0);
         Time.timeScale = Mathf.Max(0, newTimeScale);
         SceneManager.LoadScene(buildIndex, mode);
     }
 
     public virtual void Quit()
     {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
         Application.Quit();
+#endif
     }
 }

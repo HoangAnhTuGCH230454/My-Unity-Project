@@ -165,7 +165,7 @@ public class PlayerController : PersistentObject
     }
 
     public State state;
-    public bool Is(State s) {  return state.HasFlag(s); }
+    public bool Is(State s) { return state.HasFlag(s); }
     public void Set(State s, bool on)
     {
         if (on)
@@ -258,7 +258,7 @@ public class PlayerController : PersistentObject
             Heal();
             CastSpell();
         }
-        
+
 
         if (Is(State.healing)) return;
         if (Is(State.alive))
@@ -280,7 +280,7 @@ public class PlayerController : PersistentObject
             }
             Attack();
         }
-        
+
     }
 
     private void OnTriggerEnter2D(Collider2D _other)
@@ -301,8 +301,8 @@ public class PlayerController : PersistentObject
 
     void GetInputs()
     {
-        if (GameManager.Instance.isPaused || GameManager.isStopped) 
-        { 
+        if (GameManager.Instance.isPaused || GameManager.isStopped)
+        {
             return;
         }
         xAxis = Input.GetAxisRaw("Horizontal");
@@ -358,14 +358,9 @@ public class PlayerController : PersistentObject
 
     void ToggleInventory()
     {
-        if (openInventory)
-        {
-            UIManager.Instance.inventory.SetActive(true);
-        }
-        else
-        {
-            UIManager.Instance.inventory.SetActive(false);
-        }
+        if (!UIManager.Instance || !UIManager.Instance.inventory) return;
+
+        UIManager.Instance.inventory.SetActive(openInventory);
     }
     void Flip()
     {
@@ -439,30 +434,30 @@ public class PlayerController : PersistentObject
             if (yAxis == 0 || (yAxis < 0 && Grounded()))
             {
                 int recoilLeftorRight = Is(State.lookingRight) ? 1 : -1;
-                Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, Vector2.right * recoilLeftorRight, recoilXSpeed);
+                Hit(SideAttackTransform, SideAttackArea, State.recoilingX, Vector2.right * recoilLeftorRight, recoilXSpeed);
                 Instantiate(currentSlash, SideAttackTransform);
             }
             else if (yAxis > 0)
             {
-                Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, Vector2.up, recoilYSpeed);
+                Hit(UpAttackTransform, UpAttackArea, State.recoilingY, Vector2.up, recoilYSpeed);
                 SlashEffectAtAngle(currentSlash, 80, UpAttackTransform);
             }
             else if (yAxis < 0 && !Grounded())
             {
-                Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, Vector2.down, recoilYSpeed);
+                Hit(DownAttackTransform, DownAttackArea, State.recoilingY, Vector2.down, recoilYSpeed);
                 SlashEffectAtAngle(currentSlash, -90, DownAttackTransform);
             }
         }
     }
 
-    void Hit(Transform _attackTransform, Vector2 _attackArea, ref bool _recoilBool, Vector2 _recoilDir, float _recoilStrength)
+    void Hit(Transform _attackTransform, Vector2 _attackArea, State _recoilState, Vector2 _recoilDir, float _recoilStrength)
     {
         Collider2D[] objectsToHit = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0, attackableLayer);
         List<Enemy> hitEnemies = new List<Enemy>();
 
         if (objectsToHit.Length > 0)
         {
-            _recoilBool = true;
+            Set(_recoilState, true);
         }
 
         for (int i = 0; i < objectsToHit.Length; i++)
@@ -655,8 +650,8 @@ public class PlayerController : PersistentObject
 
     public int ExcessHealth
     {
-        get { return excessHealth; } 
-        set 
+        get { return excessHealth; }
+        set
         {
             if (excessHealth != value)
             {
@@ -730,7 +725,7 @@ public class PlayerController : PersistentObject
                 }
                 mana = Mathf.Max(0, value);
             }
-            UIManager.UpdateManaUI(mana, maxMana, excessMana, ExcessMaxMana, 1- manaPenalty);
+            UIManager.UpdateManaUI(mana, maxMana, excessMana, ExcessMaxMana, 1 - manaPenalty);
         }
     }
 
@@ -774,15 +769,15 @@ public class PlayerController : PersistentObject
 
     IEnumerator CastCoroutine()
     {
-        
+
 
         if ((yAxis == 0 || (yAxis < 0 && Grounded())) && abilities.HasFlag(Abilities.sideCast))
-        {   
+        {
             audioSources.PlayOneShot(sideSpellSound);
             anim.SetBool("Casting", true);
             yield return new WaitForSeconds(0.15f);
             GameObject _fireBall = Instantiate(SideSpellCast, SideAttackTransform.position, Quaternion.identity);
-            
+
             if (Is(State.lookingRight))
             {
                 _fireBall.transform.eulerAngles = Vector3.zero;
@@ -896,7 +891,7 @@ public class PlayerController : PersistentObject
         transform.eulerAngles = new Vector2(transform.eulerAngles.x, 0);
     }
 
-    public override PersistentObject.SaveData Save() 
+    public override PersistentObject.SaveData Save()
     {
         SaveData playerData = new SaveData();
         if (CanSave())
