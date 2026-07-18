@@ -101,14 +101,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 20
-  recoilLength: 1
-  recoilFactor: 5
+  recoilLength: 0.2
+  recoilFactor: 0.3
   isRecoiling: 0
   player: {fileID: 0}
   speed: 7
-  damage: 2
+  damage: 1
   EnemyBlood: {fileID: 0}
-  flipTime: 3
+  flipTime: 2
   ledgeCheckX: 1.2
   ledgeCheckY: 1
   whatIsGround:

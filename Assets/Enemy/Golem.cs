@@ -34,21 +34,25 @@ public class Golem : Enemy
     {
         if (health <= 0)
         {
+            // Trigger the Died animation from the Animator
+            anim.Play("Died");
             Death(0.05f);
         }
+
         Vector3 _LedgeCheckStart = transform.localScale.x > 0
                     ? new Vector3(ledgeCheckX, 0)
                     : new Vector3(-ledgeCheckX, 0);
         Vector2 _wallCheckDir = transform.localScale.x > 0
                     ? transform.right
                     : -transform.right;
+
         switch (GetCurrentEnemyStates)
         {
             case EnemyStates.Golem_Idle:
                 if (!Physics2D.Raycast(transform.position + _LedgeCheckStart, Vector2.down, ledgeCheckY, whatIsGround)
                     || Physics2D.Raycast(transform.position, _wallCheckDir, ledgeCheckX, whatIsGround))
                 {
-
+                    transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);
                 }
 
                 rb.velocity = transform.localScale.x > 0
@@ -70,7 +74,7 @@ public class Golem : Enemy
             case EnemyStates.Golem_Attack:
                 timer += Time.deltaTime;
 
-                if(timer < LungeLength)
+                if (timer < LungeLength)
                 {
                     if (Physics2D.Raycast(transform.position, Vector2.down, ledgeCheckY, whatIsGround))
                     {
@@ -101,12 +105,26 @@ public class Golem : Enemy
     {
         if (GetCurrentEnemyStates == EnemyStates.Golem_Idle)
         {
+            anim.Play("Walk");
             anim.speed = 1;
         }
-
-        if (GetCurrentEnemyStates == EnemyStates.Golem_Attack)
+        else if (GetCurrentEnemyStates == EnemyStates.Golem_Suprise)
         {
+            anim.Play("Golem");
+            anim.speed = 1;
+        }
+        else if (GetCurrentEnemyStates == EnemyStates.Golem_Attack)
+        {
+            anim.Play("Attack");
             anim.speed = LungeSpeedMultiplier;
+        }
+    }
+
+    public virtual void TakeDamage()
+    {
+        if (health > 0)
+        {
+            anim.Play("Hit");
         }
     }
 }

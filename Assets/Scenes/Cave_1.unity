@@ -47570,6 +47570,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Golem
       objectReference: {fileID: 0}
+    - target: {fileID: 3459746876760073268, guid: 98e8679ce390a0a408b2843f115a8db4, type: 3}
+      propertyPath: LungeLength
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6637995357214134939, guid: 98e8679ce390a0a408b2843f115a8db4, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 0.5

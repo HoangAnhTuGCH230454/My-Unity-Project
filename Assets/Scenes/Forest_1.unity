@@ -38831,10 +38831,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a547afd1ee8ff649a66b59555cc03ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneEntrance: 0
+  sceneEntrance: 3
   fadeTime: 1
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
-  crossFade: 0
+  crossFade: 0.5
   updateFrequency: 0.05
   timeScaleMode: 0
   feedbackConfig: {fileID: 0}
