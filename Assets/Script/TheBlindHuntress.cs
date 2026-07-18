@@ -271,7 +271,7 @@ public class TheBlindHuntress : Enemy
         if (_other.GetComponent<PlayerController>() != null && DiveAttack)
         {
             _other.GetComponent<PlayerController>().TakeDamage(damage * 2);
-            PlayerController.Instance.pState.recoilingX = true;
+            PlayerController.Instance.Set(PlayerController.State.recoilingX, true);
         }
     }
     #endregion

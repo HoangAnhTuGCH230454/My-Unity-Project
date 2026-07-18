@@ -130,7 +130,6 @@ public class PlayerController : PersistentObject
     [Header("Camera Setting")]
     [SerializeField] private float playerFallSpeedTheshold = -10;
 
-    [HideInInspector] public PlayerStateList pState;
     public Rigidbody2D rb;
     private float xAxis;
     private float yAxis;
@@ -373,7 +372,7 @@ public class PlayerController : PersistentObject
         if (xAxis > 0)
         {
             transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x), transform.localScale.y);
-            pState.lookingRight = true;
+            Set(State.lookingRight, true);
             if (Grounded())
             {
                 dust.Play();
@@ -392,7 +391,7 @@ public class PlayerController : PersistentObject
     IEnumerator Dash()
     {
         canDash = false;
-        pState.dashing = true;
+        Set(State.dashing, true);
         anim.SetTrigger("Dashing");
         audioSources.PlayOneShot(dashSound);
         rb.gravityScale = 0;
@@ -584,7 +583,7 @@ public class PlayerController : PersistentObject
 
     IEnumerator StopTakingDamage()
     {
-        pState.invincible = true;
+        Set(State.invincible, true);
         anim.SetTrigger("takeDamage");
         GameObject _bloodSplitParticle = Instantiate(bloodSplit, transform.position, Quaternion.identity);
         Destroy(_bloodSplitParticle, 1f);
@@ -627,7 +626,7 @@ public class PlayerController : PersistentObject
             }
 
             GetComponent<BoxCollider2D>().enabled = true;
-            pState.alive = true;
+            Set(State.alive, true);
 
             this.manaPenalty = manaPenalty;
             mana = excessMana = 0;
@@ -684,7 +683,7 @@ public class PlayerController : PersistentObject
     {
         if (Input.GetButton("Cast/Heal") && castorhealTimer > 0.05 && Health < maxHealth && Mana > 0 && Grounded() && !Is(State.dashing))
         {
-            pState.healing = true;
+            Set(State.healing, true);
             rb.velocity = Vector2.zero;
             if (activeHealingVFX == null)
             {
@@ -763,7 +762,7 @@ public class PlayerController : PersistentObject
     {
         if (Input.GetButtonUp("Cast/Heal") && castorhealTimer <= 0.05f && Mana >= manaSpellCost && timeSinceCast >= timeBetweenCast)
         {
-            pState.casting = true;
+            Set(State.casting, true);
             timeSinceCast = 0;
             StartCoroutine(CastCoroutine());
         }
@@ -792,7 +791,7 @@ public class PlayerController : PersistentObject
             {
                 _fireBall.transform.eulerAngles = new Vector2(_fireBall.transform.eulerAngles.x, 180);
             }
-            pState.recoilingX = true;
+            Set(State.recoilingX, true);
             Mana -= manaSpellCost;
             yield return new WaitForSeconds(0.25f);
 
@@ -990,13 +989,13 @@ public class PlayerController : PersistentObject
             }
 
             rb.velocity = new Vector3(rb.velocity.x, jumpForce);
-            pState.jumping = true;
+            Set(State.jumping, true);
             jumpBufferCounter = 0;
         }
         if (!Grounded() && airJumpCounter < maxAirJumps && Input.GetButtonDown("Jump") && abilities.HasFlag(Abilities.dbJump))
         {
             audioSources.PlayOneShot(jumpSound);
-            pState.jumping = true;
+            Set(State.jumping, true);
             airJumpCounter++;
             rb.velocity = new Vector3(rb.velocity.x, jumpForce);
         }

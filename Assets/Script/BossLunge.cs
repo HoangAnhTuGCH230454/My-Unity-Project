@@ -19,10 +19,10 @@ public class BossLunge : StateMachineBehaviour
         rb.gravityScale = 0;
         int _dir = TheBlindHuntress.instance.facingRight ? 1 : -1;
         rb.velocity = new Vector2(_dir * (TheBlindHuntress.instance.speed * 5), 0f);
-        if (Vector2.Distance(PlayerController.Instance.transform.position, rb.position) <= TheBlindHuntress.instance.attackRange && !TheBlindHuntress.instance.damagePlayer && !PlayerController.Instance.pState.invincible)
+        if (Vector2.Distance(PlayerController.Instance.transform.position, rb.position) <= TheBlindHuntress.instance.attackRange && !TheBlindHuntress.instance.damagePlayer && !PlayerController.Instance.Is(PlayerController.State.invincible))
         {
             PlayerController.Instance.TakeDamage(TheBlindHuntress.instance.damage);
-            if (PlayerController.Instance.pState.alive)
+            if (PlayerController.Instance.Is(PlayerController.State.alive))
             {
                 GameManager.Stop();
             }

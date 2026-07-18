@@ -25,10 +25,10 @@ public class TBH_Event : MonoBehaviour
         Collider2D[] _objectsToHit = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0);
         for (int i = 0; i < _objectsToHit.Length; i++)
         {
-            if (_objectsToHit[i].GetComponent<PlayerController>() != null && !PlayerController.Instance.pState.invincible)
+            if (_objectsToHit[i].GetComponent<PlayerController>() != null && !PlayerController.Instance.Is(PlayerController.State.invincible))
             {
                 _objectsToHit[i].GetComponent<PlayerController>().TakeDamage(TheBlindHuntress.instance.damage);
-                if (PlayerController.Instance.pState.alive)
+                if (PlayerController.Instance.Is(PlayerController.State.alive))
                 {
                     GameManager.Stop();
                 }
