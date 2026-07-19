@@ -9,6 +9,7 @@ public class UIManager : UiScreen
     public UiHealth healthUI;
     public UiMana manaUI;
     public UiScreen deathScreen;
+    public UiScreen pauseMenu;
     public GameObject inventory;
 
     public static void UpdateHealthUI(int health, int maxHealth, int excessHealth = 0)

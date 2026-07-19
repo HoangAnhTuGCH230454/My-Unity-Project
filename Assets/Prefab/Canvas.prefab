@@ -3763,6 +3763,7 @@ MonoBehaviour:
   defaultRespawnpoint: {x: 0, y: -0.29}
   shadePrefab: {fileID: 9048471135396005929, guid: 7cb68f363f110154c88a007756935ebe, type: 3}
   pauseMenu: {fileID: 7087417447327890282}
+  uiCanvasPrefab: {fileID: 6347247999232756160}
   fadeTime: 1
   isPaused: 0
 --- !u!1 &6548509997681178781

@@ -17,8 +17,9 @@ public class GameManager : PersistentObject
 
     public Shade shadePrefab;
     Shade currentShade;
-    
+
     [SerializeField] private UiScreen pauseMenu;
+    [SerializeField] private GameObject uiCanvasPrefab;
     [SerializeField] private float fadeTime;
     public bool isPaused;
     float lasttimeScale = -1f;
@@ -46,6 +47,17 @@ public class GameManager : PersistentObject
             Instance = this;
         }
         DontDestroyOnLoad(gameObject);
+
+        if (UIManager.Instance == null && uiCanvasPrefab != null)
+        {
+            Instantiate(uiCanvasPrefab);
+        }
+
+        if (pauseMenu == null && UIManager.Instance != null)
+        {
+            pauseMenu = UIManager.Instance.pauseMenu;
+        }
+
         SaveScene();
     }
 
@@ -88,6 +100,11 @@ public class GameManager : PersistentObject
     }
     public void Pause(bool pausing)
     {
+        if (pauseMenu == null)
+        {
+            Debug.LogWarning("GameManager.Pause() called but no pause menu is assigned.");
+            return;
+        }
         if (pauseMenu.isAnimate())
         {
             return;
@@ -253,7 +270,7 @@ public class GameManager : PersistentObject
     }
 
     [System.Flags]
-    public enum Flags : long { None = 0, TBHDefeated = 1}
+    public enum Flags : long { None = 0, TBHDefeated = 1 }
     public static bool Is(Flags f)
     {
         return globalData.flags.HasFlag(f);
@@ -291,7 +308,7 @@ public class GameManager : PersistentObject
                 shadePositionZ = value.z;
             }
         }
-        
+
         public Quaternion shadeRotation
         {
             get { return new Quaternion(shadeRotationX, shadeRotationY, shadeRotationZ, shadeRotationW); }

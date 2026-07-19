@@ -601,6 +601,7 @@ public class PlayerController : PersistentObject
         audioSources.PlayOneShot(deathSound);
         rb.constraints = RigidbodyConstraints2D.FreezePosition;
         GetComponent<BoxCollider2D>().enabled = false;
+        GameManager.SpawnShade(transform.position, transform.rotation);
         yield return new WaitForSeconds(1f);
         UIManager.Instance.deathScreen.Activate();
         yield return new WaitForSeconds(1f);
@@ -622,6 +623,11 @@ public class PlayerController : PersistentObject
 
             GetComponent<BoxCollider2D>().enabled = true;
             Set(State.alive, true);
+
+            if (sr)
+            {
+                sr.color = Color.white;
+            }
 
             this.manaPenalty = manaPenalty;
             mana = excessMana = 0;
