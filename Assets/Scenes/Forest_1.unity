@@ -38751,7 +38751,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7297910018353554502, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
     m_RemovedGameObjects:
     - {fileID: 3057503857912349887, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
     - {fileID: 8039261590000166579, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
@@ -38911,7 +38912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a547afd1ee8ff649a66b59555cc03ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneEntrance: 3
+  sceneEntrance: 0
   fadeTime: 1
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
   crossFade: 0.5
