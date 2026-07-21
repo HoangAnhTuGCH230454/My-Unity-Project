@@ -2676,7 +2676,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0.5
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &613689574
 MonoBehaviour:
@@ -11872,7 +11872,7 @@ MonoBehaviour:
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
   crossFade: 0.5
   updateFrequency: 0.05
-  timeScaleMode: 1
+  timeScaleMode: 0
   feedbackConfig: {fileID: 0}
   audioMixer: {fileID: 24100000, guid: f102e485d5cf3ab49a862153699a4785, type: 2}
 --- !u!1 &1746271180
