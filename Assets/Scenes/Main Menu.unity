@@ -2285,7 +2285,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -2301,7 +2301,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -2317,7 +2317,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -3062,7 +3062,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -3078,7 +3078,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -3094,7 +3094,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -3487,7 +3487,7 @@ MonoBehaviour:
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
   crossFade: 0.5
   updateFrequency: 0.05
-  timeScaleMode: 1
+  timeScaleMode: 0
   feedbackConfig: {fileID: 11400000, guid: f91460df42116bb4d8621402674fc028, type: 2}
 --- !u!1 &851836935
 GameObject:
@@ -3732,6 +3732,18 @@ MonoBehaviour:
             m_StringArgument: select
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1727649607}
+          m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
+          m_MethodName: PlayAudioFeedback
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: select
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 10
     callback:
       m_PersistentCalls:
@@ -3760,6 +3772,18 @@ MonoBehaviour:
             m_StringArgument: deselect
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1727649607}
+          m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
+          m_MethodName: PlayAudioFeedback
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: deselect
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 15
     callback:
       m_PersistentCalls:
@@ -3777,6 +3801,18 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
         - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
+          m_MethodName: PlayAudioFeedback
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: submit
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -3957,7 +3993,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -3973,7 +4009,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -3989,7 +4025,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -9160,7 +9196,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -9176,7 +9212,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -9192,7 +9228,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5
@@ -11141,8 +11177,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1460210845}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11217,7 +11253,7 @@ RectTransform:
   m_Father: {fileID: 1919821509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11778,7 +11814,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1727649602
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11851,9 +11887,9 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1727649601}
   m_Enabled: 1
-  m_Alpha: 0
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!114 &1727649607
 MonoBehaviour:
@@ -11867,13 +11903,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44947edf4d9fc74091502fa0e6b5e78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneEntrance: 3
+  sceneEntrance: 1
   fadeTime: 1
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
   crossFade: 0.5
   updateFrequency: 0.05
-  timeScaleMode: 0
-  feedbackConfig: {fileID: 0}
+  timeScaleMode: 1
+  feedbackConfig: {fileID: 11400000, guid: f91460df42116bb4d8621402674fc028, type: 2}
   audioMixer: {fileID: 24100000, guid: f102e485d5cf3ab49a862153699a4785, type: 2}
 --- !u!1 &1746271180
 GameObject:
@@ -12516,6 +12552,18 @@ MonoBehaviour:
             m_StringArgument: select
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1727649607}
+          m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
+          m_MethodName: PlayAudioFeedback
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: select
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 10
     callback:
       m_PersistentCalls:
@@ -12544,6 +12592,18 @@ MonoBehaviour:
             m_StringArgument: deselect
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1727649607}
+          m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
+          m_MethodName: PlayAudioFeedback
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: deselect
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 15
     callback:
       m_PersistentCalls:
@@ -12561,6 +12621,18 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
         - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
+          m_MethodName: PlayAudioFeedback
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: submit
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1727649607}
           m_TargetAssemblyTypeName: UiScreen, Assembly-CSharp
           m_MethodName: PlayAudioFeedback
           m_Mode: 5

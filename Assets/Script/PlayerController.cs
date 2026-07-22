@@ -618,7 +618,7 @@ public class PlayerController : PersistentObject
             }
             if (anim)
             {
-                anim.Play("Player_Idle");
+                anim.Play("idle");
             }
 
             GetComponent<BoxCollider2D>().enabled = true;

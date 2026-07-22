@@ -9,6 +9,7 @@ public class DestroyinMainMenu : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
+            Time.timeScale = 1f;
             Destroy(gameObject);
         }
     }
