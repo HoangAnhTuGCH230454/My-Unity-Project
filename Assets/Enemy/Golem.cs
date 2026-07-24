@@ -34,7 +34,6 @@ public class Golem : Enemy
     {
         if (health <= 0)
         {
-            // Trigger the Died animation from the Animator
             anim.Play("Died");
             Death(0.05f);
         }
@@ -58,6 +57,12 @@ public class Golem : Enemy
                 rb.velocity = transform.localScale.x > 0
                     ? new Vector2(speed, rb.velocity.y)
                     : new Vector2(-speed, rb.velocity.y);
+
+                RaycastHit2D _playerDetect = Physics2D.Raycast(transform.position, _wallCheckDir, ledgeCheckX * 10);
+                if (_playerDetect.collider != null && _playerDetect.collider.gameObject.CompareTag("Player"))
+                {
+                    ChangeState(EnemyStates.Golem_Suprise);
+                }
                 break;
 
             case EnemyStates.Golem_Suprise:
@@ -120,8 +125,10 @@ public class Golem : Enemy
         }
     }
 
-    public virtual void TakeDamage()
+    public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
     {
+        base.EnemyHit(_damageDone, _hitDirection, _hitForce);
+
         if (health > 0)
         {
             anim.Play("Hit");

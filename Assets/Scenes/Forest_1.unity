@@ -38671,6 +38671,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8311172719084816224, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.9000244
+      objectReference: {fileID: 0}
+    - target: {fileID: 8311172719084816224, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1.9100342
+      objectReference: {fileID: 0}
     - target: {fileID: 8312113133822647370, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
       propertyPath: m_Type
       value: 0
@@ -38751,8 +38759,7 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7297910018353554502, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3057503857912349887, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
     - {fileID: 8039261590000166579, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
@@ -38912,7 +38919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a547afd1ee8ff649a66b59555cc03ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneEntrance: 0
+  sceneEntrance: 3
   fadeTime: 1
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
   crossFade: 0.5
@@ -44862,15 +44869,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1030951091789575131, guid: 4cc8f0e82fe9be74b95691569e5a3a4b, type: 3}
       propertyPath: Exit.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1030951091789575131, guid: 4cc8f0e82fe9be74b95691569e5a3a4b, type: 3}
       propertyPath: Exit.y
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1030951091789575131, guid: 4cc8f0e82fe9be74b95691569e5a3a4b, type: 3}
       propertyPath: Endtime
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1030951091789575131, guid: 4cc8f0e82fe9be74b95691569e5a3a4b, type: 3}
       propertyPath: Transitionto
@@ -50640,6 +50647,10 @@ PrefabInstance:
     - target: {fileID: 8932202104877406861, guid: 8ae4a8e6f24f1bc459c170e08018d778, type: 3}
       propertyPath: health
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932202104877406861, guid: 8ae4a8e6f24f1bc459c170e08018d778, type: 3}
+      propertyPath: saveID
+      value: 2bda6e78-1c85-4ab8-b8a7-d5fe9489950f
       objectReference: {fileID: 0}
     - target: {fileID: 8932202104877406861, guid: 8ae4a8e6f24f1bc459c170e08018d778, type: 3}
       propertyPath: jumpForce

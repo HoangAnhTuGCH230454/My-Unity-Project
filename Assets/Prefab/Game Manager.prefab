@@ -48,7 +48,7 @@ MonoBehaviour:
   Transitionfrom: 
   PlatformrespawnPoint: {x: 0, y: 0}
   respawnAfterDeath: {x: 0, y: 0}
-  defaultRespawnpoint: {x: 0, y: 0}
+  defaultRespawnpoint: {x: 0, y: -0.29}
   shadePrefab: {fileID: 0}
   pauseMenu: {fileID: 0}
   uiCanvasPrefab: {fileID: 0}

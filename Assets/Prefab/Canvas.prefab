@@ -161,19 +161,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324039468798127103}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8114, y: 0.8114, z: 0.8114}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6719322374937631196}
   - {fileID: 8216969983058014016}
   m_Father: {fileID: 8102708477248743618}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.17750001, y: 0.72}
-  m_AnchorMax: {x: 0.91625005, y: 0.82}
-  m_AnchoredPosition: {x: 0.5, y: 0}
-  m_SizeDelta: {x: 1, y: 0}
+  m_AnchorMin: {x: 0.17375, y: 0.8066271}
+  m_AnchorMax: {x: 0.795, y: 0.915}
+  m_AnchoredPosition: {x: -6.899994, y: -1.9100189}
+  m_SizeDelta: {x: 95, y: -4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &5706546794585143446
 CanvasGroup:
@@ -3636,7 +3636,7 @@ GameObject:
   - component: {fileID: 190646014223832100}
   - component: {fileID: 8959214454618535764}
   - component: {fileID: 2475597578020181723}
-  - component: {fileID: 7297910018353554502}
+  - component: {fileID: 5491808387187359006}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3744,7 +3744,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &7297910018353554502
+--- !u!114 &5491808387187359006
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3753,19 +3753,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 6347247999232756160}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5027aaab92de7d740b80955fc8ce976c, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a547afd1ee8ff649a66b59555cc03ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveID: GameManager
-  Transitionfrom: 
-  PlatformrespawnPoint: {x: 0, y: 0}
-  respawnAfterDeath: {x: 0, y: 0}
-  defaultRespawnpoint: {x: 0, y: -0.29}
-  shadePrefab: {fileID: 9048471135396005929, guid: 7cb68f363f110154c88a007756935ebe, type: 3}
-  pauseMenu: {fileID: 7087417447327890282}
-  uiCanvasPrefab: {fileID: 6347247999232756160}
+  sceneEntrance: 0
   fadeTime: 1
-  isPaused: 0
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  crossFade: 0
+  updateFrequency: 0.05
+  timeScaleMode: 1
+  feedbackConfig: {fileID: 0}
+  healthUI: {fileID: 5905808736855597438}
+  manaUI: {fileID: 3328111009615447806}
+  deathScreen: {fileID: 8039202599841011052}
+  pauseMenu: {fileID: 7087417447327890282}
+  inventory: {fileID: 3789632345260336885}
 --- !u!1 &6548509997681178781
 GameObject:
   m_ObjectHideFlags: 0
@@ -4537,7 +4539,7 @@ RectTransform:
   m_GameObject: {fileID: 7339862686820025069}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8114, y: 0.8114, z: 0.8114}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4527334189003197574}
@@ -4546,7 +4548,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.015000001, y: 0.6333334}
   m_AnchorMax: {x: 0.16625, y: 0.915}
-  m_AnchoredPosition: {x: -0.00012207031, y: 0}
+  m_AnchoredPosition: {x: -11.924927, y: 36.755005}
   m_SizeDelta: {x: -1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2591173913106412459
