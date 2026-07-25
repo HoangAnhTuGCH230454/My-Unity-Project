@@ -29,7 +29,7 @@ The player explores an interconnected world, fighting enemies, collecting upgrad
 ### Prerequisites
 
 - Unity Hub
-- Unity Editor (see `ProjectSettings/ProjectVersion.txt` in this repo for the exact version used)
+- Unity Editor (2022.3.62f3)
 
 ### Setup
 
