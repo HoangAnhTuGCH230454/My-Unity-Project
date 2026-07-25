@@ -35,7 +35,7 @@ public class Golem : Enemy
         if (health <= 0)
         {
             anim.Play("Died");
-            Death(0.05f);
+            Death(0.83f);
         }
 
         Vector3 _LedgeCheckStart = transform.localScale.x > 0
@@ -58,7 +58,7 @@ public class Golem : Enemy
                     ? new Vector2(speed, rb.velocity.y)
                     : new Vector2(-speed, rb.velocity.y);
 
-                RaycastHit2D _playerDetect = Physics2D.Raycast(transform.position, _wallCheckDir, ledgeCheckX * 10);
+                RaycastHit2D _playerDetect = Physics2D.Raycast(transform.position + _LedgeCheckStart, _wallCheckDir, ledgeCheckX * 10);
                 if (_playerDetect.collider != null && _playerDetect.collider.gameObject.CompareTag("Player"))
                 {
                     ChangeState(EnemyStates.Golem_Suprise);
@@ -132,6 +132,19 @@ public class Golem : Enemy
         if (health > 0)
         {
             anim.Play("Hit");
+            StopCoroutine(nameof(ResumeAnimAfterHit));
+            StartCoroutine(ResumeAnimAfterHit());
         }
+    }
+
+    private IEnumerator ResumeAnimAfterHit()
+    {
+        yield return new WaitForSeconds(recoilLength);
+        ChangeCurrentAnim();
+    }
+
+    protected override void Death(float _destroyTime)
+    {
+        base.Death(0.83f);
     }
 }

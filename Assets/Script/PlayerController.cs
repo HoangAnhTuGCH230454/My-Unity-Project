@@ -414,6 +414,7 @@ public class PlayerController : PersistentObject
         Flip();
         yield return new WaitForSeconds(_delay);
         Set(State.cutscene, false);
+        Set(State.invincible, false);
     }
     void Attack()
     {

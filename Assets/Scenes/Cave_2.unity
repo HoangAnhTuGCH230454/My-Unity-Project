@@ -14485,87 +14485,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &479886484
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -26.99674
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -21.29386
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -6.6611185
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: saveID
-      value: GameManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: fadeTime
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: pauseMenu
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: shadePrefab
-      value: 
-      objectReference: {fileID: 9048471135396005929, guid: 7cb68f363f110154c88a007756935ebe, type: 3}
-    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: uiCanvasPrefab
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: defaultRespawnpoint.y
-      value: -0.29
-      objectReference: {fileID: 0}
-    - target: {fileID: 8174295847467914212, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-      propertyPath: m_Name
-      value: Game Manager
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
 --- !u!1001 &485043891
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42388,7 +42307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1728105305800740620, guid: e9a12fb9ad4d7564ebd2f21a204437e0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -561.5814
+      value: -562.40027
       objectReference: {fileID: 0}
     - target: {fileID: 1728105305800740620, guid: e9a12fb9ad4d7564ebd2f21a204437e0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -61210,4 +61129,3 @@ SceneRoots:
   - {fileID: 1204842664}
   - {fileID: 1537989055}
   - {fileID: 73148172}
-  - {fileID: 479886484}

@@ -763,22 +763,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
---- !u!1 &27334146 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8174295847467914212, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-  m_PrefabInstance: {fileID: 27334145}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &27334147 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
-  m_PrefabInstance: {fileID: 27334145}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27334146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5027aaab92de7d740b80955fc8ce976c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &29276286
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38506,7 +38490,7 @@ PrefabInstance:
     - target: {fileID: 7653799806320245764, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 27334147}
+      objectReference: {fileID: 0}
     - target: {fileID: 7653799806320245764, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: respawnPlayer
@@ -38718,7 +38702,7 @@ PrefabInstance:
     - target: {fileID: 9030086939533536957, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 27334146}
+      objectReference: {fileID: 0}
     - target: {fileID: 9030086939533536957, guid: a80a81873b3b5314ca741e523d90bf88, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
