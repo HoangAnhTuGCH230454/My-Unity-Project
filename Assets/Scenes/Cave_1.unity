@@ -43392,7 +43392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1728105305800740620, guid: e9a12fb9ad4d7564ebd2f21a204437e0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -405.72565
+      value: -406.877
       objectReference: {fileID: 0}
     - target: {fileID: 1728105305800740620, guid: e9a12fb9ad4d7564ebd2f21a204437e0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -52825,6 +52825,91 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &1930189280
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -241.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 77
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.6611185
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629152315711449623, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: saveID
+      value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: fadeTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: pauseMenu
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: shadePrefab
+      value: 
+      objectReference: {fileID: 9048471135396005929, guid: 7cb68f363f110154c88a007756935ebe, type: 3}
+    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: uiCanvasPrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: defaultRespawnpoint.x
+      value: -241
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465291352749174443, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: defaultRespawnpoint.y
+      value: 77
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174295847467914212, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
+      propertyPath: m_Name
+      value: Game Manager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e82a78adbf8940a4cbd359e15438455a, type: 3}
 --- !u!1 &1936707866
 GameObject:
   m_ObjectHideFlags: 0
@@ -58653,6 +58738,7 @@ SceneRoots:
   - {fileID: 1043090850}
   - {fileID: 576523292}
   - {fileID: 911010772}
+  - {fileID: 1930189280}
   - {fileID: 710472588}
   - {fileID: 975112797}
   - {fileID: 2122309737}
