@@ -39,7 +39,9 @@ public class GameManager : PersistentObject
         }
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            // A GameManager already exists (persisted via DontDestroyOnLoad from a
+            // previous scene). Leave this one alone instead of destroying it - just
+            // skip re-initializing so we don't overwrite the existing Instance.
             return;
         }
         else

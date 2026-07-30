@@ -421,7 +421,7 @@ public class PlayerController : PersistentObject
         timeSinceAttack += Time.deltaTime;
         if (attack && timeSinceAttack >= timeBetweenAttack)
         {
-            timeSinceAttack = 0;
+            timeSinceAttack = 1;
 
             GameObject currentSlash = slashEffects[currentSlashIndex];
             audioSources.PlayOneShot(attackSound);
